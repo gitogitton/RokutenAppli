@@ -16,9 +16,6 @@
         android:text="体脂肪を脂肪に変換！？"
         android:textSize="25dp"
         android:gravity="center"
-        android:drawableStart="@mipmap/icon_graph"
-        android:drawablePadding="@dimen/drawablePadding"
-        android:paddingStart="@dimen/viewMarginToChild"
         android:clickable="true" />
 
 </LinearLayout>
