@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ↓　android:duplicateParentState="true" 親Viewのイベントを子Viewにも伝える -->
+<!--                android:textAlignment="gravity"
+        android:duplicateParentState="true" -->
+<RelativeLayout android:id="@+id/relativelayout_neko_shokai"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_neko_shokai"
+    android:orientation="horizontal"
+    android:padding="10sp"
+    android:clickable="true"
+    android:focusable="true"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageView
+        android:id="@+id/image_neko_shokai"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:contentDescription="@string/neko_shokai"
+        android:duplicateParentState="true"
+        android:src="@mipmap/icon_mycat_01" />
+    <TextView
+        android:id="@+id/text_neko_shokai_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/image_neko_shokai"
+        android:layout_marginStart="@dimen/viewMarginToChild"
+        android:text="うちの猫です。"
+        android:textSize="@dimen/textSizeNormal"/>
+    <TextView
+        android:id="@+id/text_neko_shokai_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_neko_shokai_1"
+        android:layout_toEndOf="@id/image_neko_shokai"
+        android:layout_marginStart="@dimen/viewMarginToChild"
+        android:text="少し太り気味でして・・・"
+        android:textSize="@dimen/textSizeSmall"/>
+    <TextView
+        android:id="@+id/text_neko_shokai_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_neko_shokai_2"
+        android:layout_toEndOf="@id/image_neko_shokai"
+        android:layout_marginStart="@dimen/viewMarginToChild"
+        android:text="ダイエット中です。"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/textSizeLarge" />
+    <ImageView
+        android:id="@+id/image_neko_shokai_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:contentDescription="@string/neko_shokai"
+        android:duplicateParentState="true"
+        android:src="@mipmap/icon_arrow_right" />
+
+</RelativeLayout>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="rokuroku.jp.rokutenappli.MainActivity">
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+<!--
+        <TextView
+            android:id="@+id/text_neko_shokai"
+            android:layout_width="match_parent"
+            android:layout_height="100sp"
+            android:layout_margin="@dimen/viewMarginToParent"
+            android:text="@string/neko_shokai"
+            android:textSize="@dimen/textSizeNormal"
+            android:gravity="center_vertical"
+            android:background="@drawable/selector_neko_shokai"
+            android:drawableStart="@mipmap/icon_mycat_01"
+            android:drawableEnd="@mipmap/icon_arrow_right"
+            android:drawablePadding="10sp"
+            android:clickable="true" android:focusable="true"/>
+
+        <include layout="@layout/separator_horizontal"
+            android:id="@+id/hSeparator_01"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/text_neko_shokai"/>
+-->
+        <!-- Header -->
+        <include layout="@layout/activity_main_head"
+            android:id="@+id/main_head"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/viewMarginToChild" />
+
+        <!-- separator -->
+        <include layout="@layout/separator_horizontal"
+            android:id="@+id/hSeparator_02"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="@dimen/viewMarginToChild"
+            android:layout_below="@id/main_head" />
+
+        <!-- Body 1 -->
+        <include layout="@layout/activity_main_body01"
+            android:id="@+id/main_body01"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/viewMarginToChild"
+            android:layout_below="@id/hSeparator_02"/>
+
+        <!-- separator -->
+        <include layout="@layout/separator_horizontal"
+            android:id="@+id/hSeparator_03"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="@dimen/viewMarginToChild"
+            android:layout_below="@id/main_body01" />
+
+        <!-- Body 2 -->
+        <include layout="@layout/activity_main_body02"
+            android:id="@+id/main_body02"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/viewMarginToChild"
+            android:layout_below="@id/hSeparator_03"/>
+
+        <!-- Body 3 -->
+        <include layout="@layout/activity_main_body03"
+            android:id="@+id/main_body03"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/viewMarginToChild"
+            android:layout_marginBottom="@dimen/viewMarginToChild"
+            android:layout_below="@id/main_body02"/>
+
+    </RelativeLayout>
+
+</ScrollView>
+
+</android.support.constraint.ConstraintLayout>

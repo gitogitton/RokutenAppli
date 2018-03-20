@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--ParentViewに対してどれくらいマージンを取って位置するか-->
+    <dimen name="textSizeNormal">20sp</dimen>
+    <dimen name="textSizeSmall">15sp</dimen>
+    <dimen name="textSizeLarge">30sp</dimen>
+    <dimen name="viewMarginToParent">5dp</dimen>
+    <dimen name="viewMarginToChild">10dp</dimen>
+    <dimen name="drawablePadding">5dp</dimen>
+</resources>

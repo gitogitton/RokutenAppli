@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" android:baselineAligned="false">
+
+    <LinearLayout
+        android:id="@+id/body01_01"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_taijyu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="体重"
+            android:textSize="@dimen/textSizeNormal"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/text_taijyuNum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textSize="@dimen/textSizeLarge"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+    <include layout="@layout/separator_vertical"
+        android:id="@+id/vSeparator_01"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="clip_horizontal"/>
+
+    <LinearLayout
+        android:id="@+id/body01_02"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_taisiboritu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="体脂肪率"
+            android:textSize="@dimen/textSizeNormal"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/text_taisiborituNum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textSize="@dimen/textSizeLarge"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+</LinearLayout>
