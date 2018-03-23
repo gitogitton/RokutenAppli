@@ -1,42 +1,30 @@
 package rokuroku.jp.rokutenappli;
 
-import android.graphics.Color;
-import android.support.v4.view.PagerTabStrip;
-import android.support.v4.view.PagerTitleStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
-import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.astuetz.PagerSlidingTabStrip;
 
 import java.util.ArrayList;
 
-import static android.util.TypedValue.COMPLEX_UNIT_SP;
-
 public class MainActivity extends AppCompatActivity {
 
     private final String TAG = getClass().getSimpleName();
-    private ViewPager mViewPager;
-
+    private ArrayList<TextView> mArrayList = new ArrayList<>();
     private int mPagerPos = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        init();
         setViewPager();
-        setListener(); //リスナー登録
     }
 
     private void showNekoShokai() {
@@ -44,27 +32,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setViewPager() {
-
-        mViewPager = findViewById( R.id.viewPager );
+        ViewPager viewPager = findViewById( R.id.viewPager );
+        //set adapter for viewPager
         MyViewPagerAdapter myPagerAdapter = new MyViewPagerAdapter( this );
-        mViewPager.setAdapter( myPagerAdapter );
-
-        PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) findViewById( R.id.tabs );
-        tabs.setViewPager( mViewPager );
-
+        viewPager.setAdapter( myPagerAdapter );
+        //set adapter of viewPager for SlidingTabStrip
+        PagerSlidingTabStrip tabs = findViewById( R.id.tabs );
+        tabs.setViewPager( viewPager );
+        //get tab resource
         int tabCount = tabs.getTabCount();
         LinearLayout linearLayout = tabs.getTabsContainer();
-        ArrayList<TextView> arrayList = new ArrayList<>();
         for ( int i=0; i<tabCount; i++ ) {
             TextView textView = (TextView)linearLayout.getChildAt( i );
-            textView.setCompoundDrawablesRelativeWithIntrinsicBounds( R.drawable.icon_blue, 0, 0, 0 );
+            if ( i==0 ) {
+                textView.setCompoundDrawablesRelativeWithIntrinsicBounds( R.drawable.icon_red, 0, 0, 0 );
+            }
+            else {
+                textView.setCompoundDrawablesRelativeWithIntrinsicBounds( R.drawable.icon_blue, 0, 0, 0 );
+            }
+            mArrayList.add( textView );
         }
-
-//        tabs.setIndicatorColor( Color.RED );
-//        tabs.setTextColor( Color.RED );
-
-
+        //set listener
         tabs.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 //                Log.d( TAG, "TAB change Page. position / offset / offsetPixels->" + position + " / " + positionOffset + " / " + positionOffsetPixels );
@@ -72,25 +62,10 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                Log.d( TAG, "TAB Select Page. position->" + position );
-                switch( position ) {
-                    case 0:
-                        Log.d( TAG, "Select Position->" + position + " Prev.->" + mPagerPos );
-                        break;
-                    case 1:
-                        Log.d( TAG, "Select Position->" + position + " Prev.->" + mPagerPos );
-                        break;
-                    case 2:
-                        Log.d( TAG, "Select Position->" + position + " Prev.->" + mPagerPos );
-                        break;
-                    case 3:
-                        Log.d( TAG, "Select Position->" + position + " Prev.->" + mPagerPos );
-                        break;
-                    case 4:
-                        Log.d( TAG, "Select Position->" + position + " Prev.->" + mPagerPos );
-                        break;
-                }
-                mPagerPos = position + 1;
+                Log.d( TAG, "onPageSelected() : Select Position->" + position + " Prev.->" + mPagerPos );
+                mArrayList.get( position ).setCompoundDrawablesRelativeWithIntrinsicBounds( R.drawable.icon_red, 0, 0, 0 );
+                mArrayList.get( mPagerPos ).setCompoundDrawablesRelativeWithIntrinsicBounds( R.drawable.icon_blue, 0, 0, 0 );
+                mPagerPos = position;
             }
 
             @Override
@@ -98,10 +73,9 @@ public class MainActivity extends AppCompatActivity {
 //                Log.d( TAG, "TAB Page scroll status. state->" + state );
             }
         });
-
     }
 
-    private void setListener() {
+    private void init() {
         //猫紹介のLinearLayoutのリスナー登録
         //View取得
         RelativeLayout relaiveNekoShokai = findViewById(R.id.main_head);
@@ -111,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
         TextView textTaisiboGraph = linearGraphTaiju.findViewById(R.id.text_taisiboritu); //体脂肪グラフ
         //体脂肪変換ボタン
         LinearLayout linearHenkanShibo = findViewById(R.id.main_body03);
-        //広告
 
         //リスナー登録
         relaiveNekoShokai.setOnClickListener(new View.OnClickListener() {
@@ -140,38 +113,5 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "linearHenkanShibo click Neko Shokai !");
             }
         });
-
-
-    }//setListener()
+    }//init()
 }
-
-//        RadioButton radioButton1 = scrollIconCm.findViewById( R.id.radioButton );
-//        RadioButton radioButton2 = scrollIconCm.findViewById( R.id.radioButton2 );
-//        RadioButton radioButton3 = scrollIconCm.findViewById( R.id.radioButton3 );
-//        RadioButton radioButton4 = scrollIconCm.findViewById( R.id.radioButton4 );
-//        RadioButton radioButton5 = scrollIconCm.findViewById( R.id.radioButton5 );
-//        mRadioButtonList.add( radioButton1 );
-//        mRadioButtonList.add( radioButton2 );
-//        mRadioButtonList.add( radioButton3 );
-//        mRadioButtonList.add( radioButton4 );
-//        mRadioButtonList.add( radioButton5 );
-
-
-
-//        scrollIconCm.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View view, MotionEvent motionEvent) {
-//                Log.d(TAG, "scrollIconCm.setOnTouchListener  Neko Shokai ! View->" + getApplicationContext().getResources().getResourceEntryName( view.getId()) );
-//                Log.d(TAG, "scrollIconCm.setOnTouchListener  Neko Shokai ! MotionEvent->" + motionEvent );
-//                //performClick(); //クリックイベントを起こす。
-//                return false;
-//            }
-//        });
-
-//イベントの起源！！！？？
-//    @Override
-//    public boolean dispatchTouchEvent(MotionEvent ev) {
-//        Log.d(TAG, "dispatchTouchEvent() start. [MotionEvent : " + ev.toString() );
-//        return super.dispatchTouchEvent(ev);
-//    }
-
