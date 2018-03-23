@@ -16,6 +16,7 @@
             android:id="@+id/text_taijyu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
             android:text="体重"
             android:textSize="@dimen/textSizeNormal"
             android:gravity="center"/>
@@ -24,6 +25,7 @@
             android:id="@+id/text_taijyuNum"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
             android:text="0"
             android:textSize="@dimen/textSizeLarge"
             android:gravity="center"/>
@@ -47,6 +49,7 @@
             android:id="@+id/text_taisiboritu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
             android:text="体脂肪率"
             android:textSize="@dimen/textSizeNormal"
             android:gravity="center"/>
@@ -55,6 +58,7 @@
             android:id="@+id/text_taisiborituNum"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
             android:text="0"
             android:textSize="@dimen/textSizeLarge"
             android:gravity="center"/>

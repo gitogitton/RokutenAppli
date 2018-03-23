@@ -3,18 +3,21 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal" android:baselineAligned="false">
+    android:orientation="horizontal"
+    android:baselineAligned="false">
 
     <TextView
         android:id="@+id/text_taijyu"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:background="@color/colorWhite"
         android:text="体重グラフ"
         android:textSize="@dimen/textSizeNormal"
         android:gravity="center"
         android:drawableTop="@mipmap/icon_graph"
-        android:drawablePadding="@dimen/drawablePadding"/>
+        android:drawablePadding="@dimen/drawablePadding"
+        android:duplicateParentState="true"/>
 
     <include layout="@layout/separator_vertical"
         android:id="@+id/vSeparator_01"
@@ -27,10 +30,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:background="@color/colorWhite"
         android:text="体脂肪率グラフ"
         android:textSize="@dimen/textSizeNormal"
         android:gravity="center"
         android:drawableTop="@mipmap/icon_graph"
-        android:drawablePadding="@dimen/drawablePadding"/>
+        android:drawablePadding="@dimen/drawablePadding"
+        android:duplicateParentState="true"/>
 
 </LinearLayout>

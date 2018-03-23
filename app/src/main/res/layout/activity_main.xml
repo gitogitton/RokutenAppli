@@ -39,7 +39,9 @@
             android:id="@+id/main_head"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/viewMarginToChild" />
+            android:layout_marginBottom="@dimen/viewMarginToChild"
+            android:layout_marginStart="@dimen/viewMarginToChild"
+            android:layout_marginEnd="@dimen/viewMarginToChild" />
 
         <!-- separator -->
         <include layout="@layout/separator_horizontal"
@@ -55,6 +57,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/viewMarginToChild"
+            android:layout_marginStart="@dimen/viewMarginToChild"
+            android:layout_marginEnd="@dimen/viewMarginToChild"
             android:layout_below="@id/hSeparator_02"/>
 
         <!-- separator -->
@@ -70,6 +74,8 @@
             android:id="@+id/main_body02"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/viewMarginToChild"
+            android:layout_marginEnd="@dimen/viewMarginToChild"
             android:layout_marginBottom="@dimen/viewMarginToChild"
             android:layout_below="@id/hSeparator_03"/>
 
@@ -80,8 +86,31 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/viewMarginToChild"
             android:layout_marginBottom="@dimen/viewMarginToChild"
+            android:layout_marginStart="@dimen/viewMarginToChild"
+            android:layout_marginEnd="@dimen/viewMarginToChild"
             android:layout_below="@id/main_body02"/>
 
+        <!-- Body 4 -->
+        <!-- ViewPager を include してる。ViewPager の layout_height には wrap_content は使えない。
+              使う場合は ViewPager を派生して onMeasur() をo verride して大きさを指定するようにしないといけないようです。 -->
+        <include layout="@layout/activity_main_body04"
+            android:id="@+id/main_body04"
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:layout_marginStart="@dimen/viewMarginToChild"
+            android:layout_marginEnd="@dimen/viewMarginToChild"
+            android:layout_below="@id/main_body03"/>
+
+        <!-- Body 5
+        <include layout="@layout/activity_main_body05"
+            android:id="@+id/main_body05"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/viewMarginToChild"
+            android:layout_marginStart="80sp"
+            android:layout_marginEnd="80sp"
+            android:layout_below="@id/main_body04"/>
+		-->
     </RelativeLayout>
 
 </ScrollView>

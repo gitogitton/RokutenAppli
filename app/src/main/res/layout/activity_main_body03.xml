@@ -3,19 +3,18 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal" android:baselineAligned="false">
+    android:orientation="horizontal"
+    android:baselineAligned="false">
 
     <TextView
         android:id="@+id/text_taijyu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginStart="@dimen/viewMarginToChild"
-        android:layout_marginEnd="@dimen/viewMarginToChild"
         android:background="@drawable/text_border"
         android:text="体脂肪を脂肪に変換！？"
-        android:textSize="25dp"
+        android:textSize="25sp"
         android:gravity="center"
-        android:clickable="true" />
+        android:duplicateParentState="true"/>
 
 </LinearLayout>
