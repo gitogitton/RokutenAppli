@@ -5,7 +5,7 @@
     <!-- 線の設定 -->
     <stroke android:width="3px" android:color="@color/colorSepLineHoriz" />
     <!-- 背景色の設定 -->
-    <solid android:color="#00ff7f" />
+    <solid android:color="@color/colorWhite" />
     <!-- 角の丸み -->
     <corners android:radius="6dp" />
 
