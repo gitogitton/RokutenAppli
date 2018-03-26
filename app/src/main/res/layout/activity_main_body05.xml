@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/viewMarginToChild"
+    android:clickable="true"
+    android:focusable="true"
+    android:duplicateParentState="true"
+    android:orientation="horizontal"
+    android:background="@color/colorWhite">
+
+    <ImageView
+        android:id="@+id/image_mottomiru"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/neko_shokai"
+        android:duplicateParentState="true"
+        android:src="@mipmap/icon_mycat_01" />
+
+    <TextView
+        android:id="@+id/text_neko_shokai_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@id/image_mottomiru"
+        android:layout_marginStart="@dimen/viewMarginToChild"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="@string/text_mottomiru"
+        android:textSize="@dimen/textSizeNormal"/>
+
+    <ImageView
+        android:id="@+id/image_neko_shokai_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/text_neko_shokai_1"
+        android:layout_alignParentEnd="true"
+        android:contentDescription="@string/text_mottomiru"
+        android:duplicateParentState="true"
+        android:src="@mipmap/icon_arrow_right" />
+
+</RelativeLayout>
