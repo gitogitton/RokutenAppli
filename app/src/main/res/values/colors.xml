@@ -6,4 +6,6 @@
 
     <color name="colorWhite">#ffffff</color>
     <color name="colorSepLineHoriz">#66cdaa</color>
+
+    <color name="colorWhenPress">#7fffd4</color>
 </resources>

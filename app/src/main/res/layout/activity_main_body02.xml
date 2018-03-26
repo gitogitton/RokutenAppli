@@ -1,23 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:baselineAligned="false">
 
+<!--
+-->
     <TextView
         android:id="@+id/text_taijyu"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="@color/colorWhite"
-        android:text="体重グラフ"
-        android:textSize="@dimen/textSizeNormal"
-        android:gravity="center"
         android:drawableTop="@mipmap/icon_graph"
         android:drawablePadding="@dimen/drawablePadding"
-        android:duplicateParentState="true"/>
+        android:background="@drawable/selector_neko_graph"
+        android:text="@string/text_taijugraph"
+        android:textSize="@dimen/textSizeNormal"
+        android:gravity="center"
+        android:duplicateParentState="false" />
 
     <include layout="@layout/separator_vertical"
         android:id="@+id/vSeparator_01"
@@ -30,12 +32,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="@color/colorWhite"
-        android:text="体脂肪率グラフ"
+        android:background="@drawable/selector_neko_graph"
+        android:text="@string/text_taishibograph"
         android:textSize="@dimen/textSizeNormal"
         android:gravity="center"
         android:drawableTop="@mipmap/icon_graph"
         android:drawablePadding="@dimen/drawablePadding"
-        android:duplicateParentState="true"/>
+        android:duplicateParentState="false"/>
 
 </LinearLayout>

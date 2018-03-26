@@ -34,7 +34,7 @@
             android:layout_height="1dp"
             android:layout_below="@id/text_neko_shokai"/>
 -->
-        <!-- Header [うちの猫です。・・・ -->
+        <!-- Header [うちの猫です。・・・] -->
         <include layout="@layout/activity_main_head"
             android:id="@+id/main_head"
             android:layout_width="match_parent"

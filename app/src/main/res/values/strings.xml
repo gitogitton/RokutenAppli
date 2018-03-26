@@ -3,4 +3,6 @@
     <string name="neko_shokai">うちの猫です。\n少し太り気味でして・・・\nダイエット中です。</string>
     <string name="text_henkan">脂肪を燃焼したい？？</string>
     <string name="text_mottomiru">うちの猫、もっと見ます？</string>
+    <string name="text_taijugraph">体重グラフ</string>
+    <string name="text_taishibograph">体脂肪グラフ</string>
 </resources>
