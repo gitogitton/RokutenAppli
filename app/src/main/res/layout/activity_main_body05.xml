@@ -6,16 +6,14 @@
     android:padding="@dimen/viewMarginToChild"
     android:clickable="true"
     android:focusable="true"
-    android:duplicateParentState="true"
-    android:orientation="horizontal"
-    android:background="@color/colorWhite">
+    android:background="@drawable/selector_neko_mottomiru"
+    android:orientation="horizontal">
 
     <ImageView
         android:id="@+id/image_mottomiru"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/neko_shokai"
-        android:duplicateParentState="true"
         android:src="@mipmap/icon_mycat_01" />
 
     <TextView
@@ -36,7 +34,6 @@
         android:layout_toEndOf="@id/text_neko_shokai_1"
         android:layout_alignParentEnd="true"
         android:contentDescription="@string/text_mottomiru"
-        android:duplicateParentState="true"
-        android:src="@mipmap/icon_arrow_right" />
+        android:src="@mipmap/icon_arrow_right_toumei" />
 
 </RelativeLayout>
