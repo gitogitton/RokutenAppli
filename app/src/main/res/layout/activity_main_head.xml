@@ -54,7 +54,6 @@
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="true"
         android:contentDescription="@string/neko_shokai"
-        android:duplicateParentState="true"
         android:src="@mipmap/icon_arrow_right_toumei" />
 
 </RelativeLayout>
