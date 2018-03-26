@@ -5,4 +5,10 @@
     <string name="text_mottomiru">うちの猫、もっと見ます？</string>
     <string name="text_taijugraph">体重グラフ</string>
     <string name="text_taishibograph">体脂肪グラフ</string>
+
+    //for Menu
+    <string name="menu01_code">？？</string>
+    <string name="menu02_info">お知らせ</string>
+    <string name="menu03_appl">アプリ一覧</string>
+
 </resources>
