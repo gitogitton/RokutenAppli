@@ -17,9 +17,9 @@
         android:padding="10dp"
         android:drawablePadding="10dp"
         android:gravity="center_horizontal|center_vertical"
-        android:background="@drawable/text_border"
+        android:background="@drawable/selector_button_nenshositai"
         android:text="@string/text_henkan"
         android:textSize="@dimen/textSizeNormal"
-        android:duplicateParentState="true"/>
+        />
 
 </LinearLayout>
