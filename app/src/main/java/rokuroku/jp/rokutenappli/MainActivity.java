@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mDrawerTitle = getString( R.string.nav_header_title );
         mTitle = getString( R.string.app_name );
-        setNaviDrawer();
         init();
     }
 
@@ -84,16 +83,16 @@ public class MainActivity extends AppCompatActivity {
             public void onDrawerOpened(View drawerView) {
                 Log.d( TAG, "drawer open." );
                 super.onDrawerOpened(drawerView);
-                toolbar.setTitle( mDrawerTitle );
-                invalidateOptionsMenu();
+                toolbar.setTitle( mDrawerTitle ); //ActionBarのタイトル変更
+                invalidateOptionsMenu(); //kick onPrepareOptionsMenu()
             }
 
             @Override
             public void onDrawerClosed(View drawerView) {
                 Log.d( TAG, "drawer close." );
                 super.onDrawerClosed(drawerView);
-                toolbar.setTitle( mTitle );
-                invalidateOptionsMenu();
+                toolbar.setTitle( mTitle ); //ActionBarのタイトル変更
+                invalidateOptionsMenu(); //kick onPrepareOptionsMenu()
             }
         };
 
@@ -114,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         Log.d( TAG, "onPrepareOptionsMenu() start." );
         boolean isDrawerOpen = mDrawerLayout.isDrawerOpen( mNavigationView );
-
+        //ActionBarのメニュー切り替え
         menu.findItem( R.id.menu01_code ).setVisible( !isDrawerOpen );
         menu.findItem( R.id.menu02_info ).setVisible( !isDrawerOpen );
         menu.findItem( R.id.menu03_appl ).setVisible( !isDrawerOpen );
@@ -123,19 +122,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init() {
-        //View取得
+
         //猫紹介
         RelativeLayout relaiveNekoShokai = findViewById(R.id.main_head);
-        //体重グラフ｜体脂肪グラフ　エリア
-        LinearLayout linearGraphTaiju = findViewById(R.id.main_body02);
-        TextView textTaijuGraph = linearGraphTaiju.findViewById(R.id.text_taijyu); //体重グラフ
-        TextView textTaisiboGraph = linearGraphTaiju.findViewById(R.id.text_taisiboritu); //体脂肪グラフ
-        //体脂肪変換ボタン
-        LinearLayout linearHenkanShibo = findViewById(R.id.main_body03);
-        //「もっと見ます？」ボタン
-        RelativeLayout relativeMotto = findViewById( R.id.main_body05 );
-
-        //リスナー登録
         relaiveNekoShokai.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -144,6 +133,11 @@ public class MainActivity extends AppCompatActivity {
                 showNekoShokai();
             }
         });
+
+        //体重グラフ｜体脂肪グラフ　エリア
+        LinearLayout linearGraphTaiju = findViewById(R.id.main_body02);
+        TextView textTaijuGraph = linearGraphTaiju.findViewById(R.id.text_taijyu); //体重グラフ
+        TextView textTaisiboGraph = linearGraphTaiju.findViewById(R.id.text_taisiboritu); //体脂肪グラフ
         textTaijuGraph.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -156,12 +150,18 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "textTaisiboGraph click Neko Shokai !");
             }
         });
+
+        //脂肪を燃焼したい？ボタン
+        LinearLayout linearHenkanShibo = findViewById(R.id.main_body03);
         linearHenkanShibo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "linearHenkanShibo click Neko Shokai !");
             }
         });
+
+        //「もっと見ます？」ボタン
+        RelativeLayout relativeMotto = findViewById( R.id.main_body05 );
         relativeMotto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -171,7 +171,8 @@ public class MainActivity extends AppCompatActivity {
 
         //ViewPgerの設定
         setViewPager();
-
+        //Navigation Drawerの設定
+        setNaviDrawer();
     }//init()
 
     private void setViewPager() {
