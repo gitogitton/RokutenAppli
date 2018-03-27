@@ -3,20 +3,20 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_menu01"
             android:title="1111" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_menu02"
             android:title="2222" />
     </group>
 
     <item android:title="Communication">
         <menu>
             <item
-                android:id="@+id/nav_share"
+                android:id="@+id/nav_menu03"
                 android:title="3333" />
             <item
-                android:id="@+id/nav_send"
+                android:id="@+id/nav_menu04"
                 android:title="4444" />
         </menu>
     </item>

@@ -1,9 +1,7 @@
 package rokuroku.jp.rokutenappli;
 
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -29,13 +27,20 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<TextView> mArrayList = new ArrayList<>();
     private int mPagerPos = 0;
 
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private NavigationView mNavigationView;
+
+    private String mDrawerTitle;
+    private String mTitle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        initNaviDrawer();
-        initMenu();
+        mDrawerTitle = getString( R.string.nav_header_title );
+        mTitle = getString( R.string.app_name );
+        setNaviDrawer();
         init();
     }
 
@@ -67,29 +72,54 @@ public class MainActivity extends AppCompatActivity {
         //うちの猫紹介fragmentでアピール
     }
 
-    private void initNaviDrawer() {
+    private void setNaviDrawer() {
 
-        Toolbar toolbar = findViewById( R.id.toolbar );
+        final Toolbar toolbar = findViewById( R.id.toolbar );
         setSupportActionBar( toolbar );
 
-        DrawerLayout drawer = findViewById( R.id.drawer_layout );
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle( this, drawer, toolbar, R.string.navi_drawer_open, R.string.navi_drawer_close );
+        mDrawerLayout = findViewById( R.id.drawer_layout );
+        mDrawerToggle = new ActionBarDrawerToggle( this, mDrawerLayout, toolbar,
+                                            R.string.navi_drawer_open, R.string.navi_drawer_close ) {
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                Log.d( TAG, "drawer open." );
+                super.onDrawerOpened(drawerView);
+                toolbar.setTitle( mDrawerTitle );
+                invalidateOptionsMenu();
+            }
 
-        drawer.addDrawerListener( toggle );
-        toggle.syncState();
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                Log.d( TAG, "drawer close." );
+                super.onDrawerClosed(drawerView);
+                toolbar.setTitle( mTitle );
+                invalidateOptionsMenu();
+            }
+        };
 
-        NavigationView navigationView = findViewById( R.id.nav_view );
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+        mDrawerLayout.addDrawerListener( mDrawerToggle );
+        mDrawerToggle.syncState();
+
+        mNavigationView = findViewById( R.id.nav_view );
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Log.d( TAG, "navigationView " );
+                Log.d( TAG, "navigationView push menu." );
                 return false;
             }
         });
     }
 
-    private void initMenu() {
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        Log.d( TAG, "onPrepareOptionsMenu() start." );
+        boolean isDrawerOpen = mDrawerLayout.isDrawerOpen( mNavigationView );
 
+        menu.findItem( R.id.menu01_code ).setVisible( !isDrawerOpen );
+        menu.findItem( R.id.menu02_info ).setVisible( !isDrawerOpen );
+        menu.findItem( R.id.menu03_appl ).setVisible( !isDrawerOpen );
+
+        return super.onPrepareOptionsMenu(menu);
     }
 
     private void init() {
