@@ -6,6 +6,16 @@
     <string name="text_taijugraph">体重グラフ</string>
     <string name="text_taishibograph">体脂肪グラフ</string>
 
+    //for navigation drawer
+    <string name="navi_drawer_open">ナビゲーションドロワーオープン</string>
+    <string name="navi_drawer_close">ナビゲーションドロワークローズ</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
     //for Menu
     <string name="menu01_code">？？</string>
     <string name="menu02_info">お知らせ</string>

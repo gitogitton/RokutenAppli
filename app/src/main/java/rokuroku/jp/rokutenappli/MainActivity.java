@@ -1,7 +1,14 @@
 package rokuroku.jp.rokutenappli;
 
+import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -26,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        initNaviDrawer();
         initMenu();
         init();
     }
@@ -56,6 +65,27 @@ public class MainActivity extends AppCompatActivity {
 
     private void showNekoShokai() {
         //うちの猫紹介fragmentでアピール
+    }
+
+    private void initNaviDrawer() {
+
+        Toolbar toolbar = findViewById( R.id.toolbar );
+        setSupportActionBar( toolbar );
+
+        DrawerLayout drawer = findViewById( R.id.drawer_layout );
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle( this, drawer, toolbar, R.string.navi_drawer_open, R.string.navi_drawer_close );
+
+        drawer.addDrawerListener( toggle );
+        toggle.syncState();
+
+        NavigationView navigationView = findViewById( R.id.nav_view );
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Log.d( TAG, "navigationView " );
+                return false;
+            }
+        });
     }
 
     private void initMenu() {

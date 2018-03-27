@@ -1,98 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="rokuroku.jp.rokutenappli.MainActivity">
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
 
-    <ScrollView
+    <!-- main contents -->
+    <include
+        layout="@layout/app_bar_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+    <!-- Navigation Drawer （されるメニュー内容） -->
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/nav_header_main"
+        app:menu="@menu/activity_main_drawer" />
 
-            <!-- Header [うちの猫です。・・・] -->
-            <include layout="@layout/activity_main_head"
-                android:id="@+id/main_head"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/viewMarginToChild"
-                android:layout_marginStart="@dimen/viewMarginToChild"
-                android:layout_marginEnd="@dimen/viewMarginToChild" />
-
-            <!-- separator -->
-            <include layout="@layout/separator_horizontal"
-                android:id="@+id/hSeparator_02"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="@dimen/viewMarginToChild"
-                android:layout_below="@id/main_head" />
-
-            <!-- Body 1 [体重／体脂肪　数値] -->
-            <include layout="@layout/activity_main_body01"
-                android:id="@+id/main_body01"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/viewMarginToChild"
-                android:layout_marginStart="@dimen/viewMarginToChild"
-                android:layout_marginEnd="@dimen/viewMarginToChild"
-                android:layout_below="@id/hSeparator_02"/>
-
-            <!-- separator -->
-            <include layout="@layout/separator_horizontal"
-                android:id="@+id/hSeparator_03"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="@dimen/viewMarginToChild"
-                android:layout_below="@id/main_body01" />
-
-            <!-- Body 2 [体重／体脂肪　グラフ] -->
-            <include layout="@layout/activity_main_body02"
-                android:id="@+id/main_body02"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/viewMarginToChild"
-                android:layout_marginEnd="@dimen/viewMarginToChild"
-                android:layout_marginBottom="@dimen/viewMarginToChild"
-                android:layout_below="@id/hSeparator_03"/>
-
-            <!-- Body 3 [変換？] -->
-            <include layout="@layout/activity_main_body03"
-                android:id="@+id/main_body03"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/viewMarginToChild"
-                android:layout_marginStart="@dimen/viewMarginToChild"
-                android:layout_marginEnd="@dimen/viewMarginToChild"
-                android:layout_below="@id/main_body02"/>
-
-            <!-- Body 4 [写真スクロール] -->
-            <!-- ViewPager を include してる。ViewPager の layout_height には wrap_content は使えない。
-                  使う場合は ViewPager を派生して onMeasur() をo verride して大きさを指定するようにしないといけないようです。 -->
-            <include layout="@layout/activity_main_body04"
-                android:id="@+id/main_body04"
-                android:layout_width="match_parent"
-                android:layout_height="140dp"
-                android:layout_marginStart="@dimen/viewMarginToChild"
-                android:layout_marginEnd="@dimen/viewMarginToChild"
-                android:layout_below="@id/main_body03"/>
-
-            <!-- Body 5 [変換？] -->
-            <include layout="@layout/activity_main_body05"
-                android:id="@+id/main_body05"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/viewMarginToChild"
-                android:layout_marginBottom="@dimen/viewMarginToChild"
-                android:layout_marginStart="@dimen/viewMarginToChild"
-                android:layout_marginEnd="@dimen/viewMarginToChild"
-                android:layout_below="@id/main_body04"/>
-
-        </RelativeLayout>
-
-    </ScrollView>
-
-</android.support.constraint.ConstraintLayout>
+</android.support.v4.widget.DrawerLayout>
