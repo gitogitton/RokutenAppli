@@ -4,20 +4,20 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_camera"
-            android:title="import" />
+            android:title="1111" />
         <item
             android:id="@+id/nav_gallery"
-            android:title="Gallery" />
+            android:title="2222" />
     </group>
 
     <item android:title="Communication">
         <menu>
             <item
                 android:id="@+id/nav_share"
-                android:title="Share" />
+                android:title="3333" />
             <item
                 android:id="@+id/nav_send"
-                android:title="Send" />
+                android:title="4444" />
         </menu>
     </item>
 
