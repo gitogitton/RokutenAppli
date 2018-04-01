@@ -1,6 +1,7 @@
 package rokuroku.jp.rokutenappli;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +22,7 @@ public class MyViewPagerAdapter extends PagerAdapter {
             R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,
             R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round  };
 
-    private LayoutInflater mLayoutInflater;
+//    private LayoutInflater mLayoutInflater;
     private final int IMAGE_NUM_IN_PAGE = 3;
 
     MyViewPagerAdapter( Context context ) {
@@ -35,23 +36,39 @@ public class MyViewPagerAdapter extends PagerAdapter {
 
     //ページを構成するViewの判定
     @Override
-    public boolean isViewFromObject(View view, Object object) {
-        return ( view == (LinearLayout)object );
+    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
+        return ( view == object );
     }
 
+    @NonNull
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
-        mLayoutInflater = (LayoutInflater) mContext.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-        View itemView = mLayoutInflater.inflate( R.layout.layout_swiped, container, false );
+    public Object instantiateItem(@NonNull ViewGroup container, int position) {
+        LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+        View itemView;
+        if (layoutInflater != null) {
+            itemView = layoutInflater.inflate( R.layout.layout_swiped, container, false );
+        } else {
+            throw new NullPointerException("layoutInflater required Non Null.");
+        }
+
+        if ( itemView == null ) {
+            throw new NullPointerException("itemView required Non Null.");
+        }
 
         ImageView imageView1 = itemView.findViewById( R.id.imageView1 );
         ImageView imageView2 = itemView.findViewById( R.id.imageView2 );
         ImageView imageView3 = itemView.findViewById( R.id.imageView3 );
 
         int startPos = position * IMAGE_NUM_IN_PAGE;
-        imageView1.setImageResource( mResourceIds[ startPos ] );
-        imageView2.setImageResource( mResourceIds[ startPos+1 ] );
-        imageView3.setImageResource( mResourceIds[ startPos+2 ] );
+        if (imageView1 != null) {
+            imageView1.setImageResource( mResourceIds[ startPos ] );
+        }
+        if (imageView2 != null) {
+            imageView2.setImageResource( mResourceIds[ startPos+1 ] );
+        }
+        if (imageView3 != null) {
+            imageView3.setImageResource( mResourceIds[ startPos+2 ] );
+        }
 
         container.addView( itemView );
 
@@ -59,12 +76,12 @@ public class MyViewPagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
+    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.removeView( (LinearLayout)object );
     }
 
     @Override
-    public int getItemPosition( Object object ) {
+    public int getItemPosition( @NonNull Object object ) {
         return super.getItemPosition(object);
     }
 

@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
     private int mPagerPos = 0;
 
     private DrawerLayout mDrawerLayout;
-    private ActionBarDrawerToggle mDrawerToggle;
     private NavigationView mNavigationView;
 
     private String mDrawerTitle;
@@ -77,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar( toolbar );
 
         mDrawerLayout = findViewById( R.id.drawer_layout );
-        mDrawerToggle = new ActionBarDrawerToggle( this, mDrawerLayout, toolbar,
+        ActionBarDrawerToggle drawerToggle =new ActionBarDrawerToggle( this, mDrawerLayout, toolbar,
                                             R.string.navi_drawer_open, R.string.navi_drawer_close ) {
             @Override
             public void onDrawerOpened(View drawerView) {
@@ -96,8 +95,8 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        mDrawerLayout.addDrawerListener( mDrawerToggle );
-        mDrawerToggle.syncState();
+        mDrawerLayout.addDrawerListener( drawerToggle );
+        drawerToggle.syncState();
 
         mNavigationView = findViewById( R.id.nav_view );
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
