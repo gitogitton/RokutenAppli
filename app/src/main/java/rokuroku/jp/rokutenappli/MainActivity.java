@@ -1,9 +1,18 @@
 package rokuroku.jp.rokutenappli;
 
+import android.drm.DrmStore;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -21,7 +30,7 @@ import com.astuetz.PagerSlidingTabStrip;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MyAplListFragment.OnFragmentInteractionListener {
 
     private final String TAG = getClass().getSimpleName();
     private ArrayList<TextView> mArrayList = new ArrayList<>();
@@ -30,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
 
+    private FragmentManager mFragmentManager = null;
+
     private String mDrawerTitle;
     private String mTitle;
 
@@ -37,9 +48,34 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         mDrawerTitle = getString( R.string.nav_header_title );
         mTitle = getString( R.string.app_name );
+
         init();
+
+        //fragment
+        if ( savedInstanceState==null ) {
+            mFragmentManager = getSupportFragmentManager();
+        }
+    }
+
+    @Override
+    protected void onRestart() {
+        Log.d( TAG, "activity->onRestart()" );
+        super.onRestart();
+    }
+
+    @Override
+    protected void onStart() {
+        Log.d( TAG, "activity->onStart()" );
+        super.onStart();
+    }
+
+    @Override
+    protected void onPostResume() {
+        Log.d( TAG, "activity->onPostResume()" );
+        super.onPostResume();
     }
 
     @Override
@@ -60,10 +96,51 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.menu03_appl :
                 Log.d( TAG, "menu->menu03_appl" );
+                showMyAplList();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void showMyAplList() {
+
+        String[] strPckgName = {
+                "com.example.user.myappl09", "com.example.user.myproject2.main.deb",
+                "com.example.user.wifioperation", "com.example.user.myokusuri.main.debug" };
+
+        String[] strLabel = new String[ strPckgName.length ];
+        Drawable[] drwbleIcon = new Drawable[ strPckgName.length ];
+        Intent[] intents = new Intent[ strPckgName.length ];
+
+        //get label, icon (drawable)
+        PackageManager packageManager = getPackageManager();
+        PackageInfo packageInfo = null;
+        for ( int i=0; i<strPckgName.length; i++ ) {
+            try {
+                packageInfo = packageManager.getPackageInfo( strPckgName[i], PackageManager.GET_ACTIVITIES );
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+            if ( packageInfo==null ) {
+                Log.d( TAG, "packageInfo->"+packageInfo );
+                return;
+            }
+            ActivityInfo[] activityInfos = packageInfo.activities;
+            if ( activityInfos.length > 0 ) {
+                drwbleIcon[ i ] = activityInfos[ 0 ].loadIcon( packageManager ); //get icon
+                strLabel[ i ] = String.valueOf( activityInfos[ 0 ].loadLabel( packageManager ) ); //get label
+                intents[ i ] = packageManager.getLaunchIntentForPackage( activityInfos[ 0 ].packageName ); //get intent for kick this appli
+            }
+        } //for(i)
+
+        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+        MyAplListFragment myAplListFragment = MyAplListFragment.newInstance( "param1","param2" );
+        fragmentTransaction.add(R.id.fragment_container, myAplListFragment);
+        fragmentTransaction.addToBackStack( null );
+        fragmentTransaction.commit();
+
+        mDrawerLayout.setDrawerLockMode( DrawerLayout.LOCK_MODE_LOCKED_CLOSED ); //navigationDrawerを反応しないようにする。
     }
 
     private void showNekoShokai() {
@@ -93,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
                 toolbar.setTitle( mTitle ); //ActionBarのタイトル変更
                 invalidateOptionsMenu(); //kick onPrepareOptionsMenu()
             }
+
         };
 
         mDrawerLayout.addDrawerListener( drawerToggle );
@@ -203,7 +281,7 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override
             public void onPageSelected(int position) {
-                Log.d( TAG, "onPageSelected() : Select Position->" + position + " Prev.->" + mPagerPos );
+                //Log.d( TAG, "onPageSelected() : Select Position->" + position + " Prev.->" + mPagerPos );
                 mArrayList.get( position ).setCompoundDrawablesRelativeWithIntrinsicBounds( R.drawable.icon_red, 0, 0, 0 );
                 mArrayList.get( mPagerPos ).setCompoundDrawablesRelativeWithIntrinsicBounds( R.drawable.icon_blue, 0, 0, 0 );
                 mPagerPos = position;
@@ -215,4 +293,14 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onFragmentInteraction(int id) {
+        //Log.d( TAG, "onFragmentInteraction() start. id->"+id );
+        if ( id==MyAplListFragment.KEY_CODE_DOWN ) {
+            ActionBar actionBar = getSupportActionBar();
+            actionBar.setTitle( mTitle );
+            actionBar.setDisplayHomeAsUpEnabled( false ); //「←」非表示
+            mDrawerLayout.setDrawerLockMode( DrawerLayout.LOCK_MODE_UNLOCKED ); //navigationDrawerを反応するようにする。
+        }
+    }
 }

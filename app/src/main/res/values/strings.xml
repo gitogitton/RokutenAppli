@@ -11,14 +11,17 @@
     <string name="navi_drawer_close">ナビゲーションドロワークローズ</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_title">猫が支配する部屋</string>
+    <string name="nav_header_subtitle">neko.neko@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
     //for Menu
     <string name="menu01_code">？？</string>
     <string name="menu02_info">お知らせ</string>
-    <string name="menu03_appl">アプリ一覧</string>
+    <string name="menu03_appl">Ｍｙアプリ一覧</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
