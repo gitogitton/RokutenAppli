@@ -78,7 +78,7 @@ public class MyAplListFragment extends Fragment {
 
     @Override
     public void onAttach(Context context) {
-        //Log.d( TAG, "onAttach() start." );
+        Log.d( TAG, "onAttach() start." );
         super.onAttach(context);
         if ( context instanceof OnFragmentInteractionListener ) {
             mListener = (OnFragmentInteractionListener) context; //リスナー登録
@@ -86,6 +86,49 @@ public class MyAplListFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
         }
+    }
+
+    @Override
+    public void onStart() {
+        Log.d( TAG, "onStart() start." );
+        super.onStart();
+    }
+
+    @Override
+    public void onResume() {
+        Log.d( TAG, "onResume() start." );
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        Log.d( TAG, "onPause() start." );
+        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        Log.d( TAG, "onStop() start." );
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroyView() {
+        Log.d( TAG, "onDestroyView() start." );
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.d( TAG, "onDestroy() start." );
+        super.onDestroy();
+    }
+
+    @Override
+    public void onDetach() {
+        Log.d( TAG, "onDetach() start." );
+        super.onDetach();
+        mListener = null;
     }
 
     @Override
@@ -108,6 +151,7 @@ public class MyAplListFragment extends Fragment {
                 return false;
             }
         });
+
         return view;
     }
 

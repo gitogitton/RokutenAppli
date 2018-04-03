@@ -21,6 +21,7 @@ import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.support.v7.widget.Toolbar;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -203,22 +204,40 @@ public class MainActivity extends AppCompatActivity implements MyAplListFragment
                 Log.d( TAG, "setToolbarNavigationClickListener.onClick()" );
 
                 List<Fragment> fragmentList = mFragmentManager.getFragments();
-                Log.d( TAG, "fragments.size()->" + fragmentList.size() );
+                Log.d( TAG, "fragmentList.size()->" + fragmentList.size() );
                 for ( int i=0; i<fragmentList.size(); i++ ) {
                     Fragment fragment = fragmentList.get(i);
                     if ( fragment instanceof MyAplListFragment ) {
                         Log.d( TAG, "fragment instanceof MyAplListFragmen" );
                         //該当のfragment削除
                         mFragmentManager.beginTransaction().remove( fragment ).commit();
+                        mFragmentManager.popBackStack();
                         //ActionBarDrawerのアイコン変更
                         mActionBarDrawerToggle.setHomeAsUpIndicator( R.mipmap.ic_menu_white_24dp ); //set icon (ハンバーガ－).
                         mActionBarDrawerToggle.setDrawerIndicatorEnabled( true ); //indicator -> enable
+
+                        mDrawerLayout.setDrawerLockMode( DrawerLayout.LOCK_MODE_UNLOCKED ); //navigationDrawerを反応するようにする。
+                        mActionBarDrawerToggle.syncState(); //NavigationDrawerとActionBar同期
+
+                        Log.d( TAG, "fragmentList.size() [2] ->" + fragmentList.size() );
+
                         break;
                     }
                 }
             }
         });
 
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch ( event.getKeyCode() ) {
+            case KeyEvent.KEYCODE_BACK :
+                Log.d( TAG, "onKeyDown()-> keycode_back" );
+                return super.onKeyDown(keyCode, event);
+            default:
+                return false;
+        }
     }
 
     @Override
