@@ -4,6 +4,7 @@ package rokuroku.jp.rokutenappli;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
@@ -72,13 +73,18 @@ public class MyAplListFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+    }
 
-        setHasOptionsMenu( false ); //オプションメニューを使用する事を宣言
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        //Log.d( TAG, "onActivityCreated() start." );
+        super.onActivityCreated(savedInstanceState);
+        setHasOptionsMenu( false ); //オプションメニューを使用しない事を宣言
     }
 
     @Override
     public void onAttach(Context context) {
-        Log.d( TAG, "onAttach() start." );
+        //Log.d( TAG, "onAttach() start." );
         super.onAttach(context);
         if ( context instanceof OnFragmentInteractionListener ) {
             mListener = (OnFragmentInteractionListener) context; //リスナー登録
