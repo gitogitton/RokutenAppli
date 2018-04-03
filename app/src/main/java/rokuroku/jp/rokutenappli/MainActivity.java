@@ -153,7 +153,11 @@ public class MainActivity extends AppCompatActivity implements MyAplListFragment
         mActionBarDrawerToggle.setDrawerIndicatorEnabled( false ); //indicator -> disable
         mActionBarDrawerToggle.setHomeAsUpIndicator( R.mipmap.ic_arrow_back_white_24dp ); //set icon (←).
 
-        mDrawerLayout.setDrawerLockMode( DrawerLayout.LOCK_MODE_LOCKED_CLOSED ); //navigationDrawerを反応しないようにする。
+        //navigationDrawerを反応しないようにする。
+        mDrawerLayout.setDrawerLockMode( DrawerLayout.LOCK_MODE_LOCKED_CLOSED );
+
+        //actionbar のメニュー非表示に
+        invalidateOptionsMenu(); //kick onPrepareOptionsMenu()
     }
 
     private void showNekoShokai() {
@@ -201,16 +205,13 @@ public class MainActivity extends AppCompatActivity implements MyAplListFragment
         mActionBarDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d( TAG, "setToolbarNavigationClickListener.onClick()" );
-
+                //Log.d( TAG, "setToolbarNavigationClickListener.onClick()" );
                 List<Fragment> fragmentList = mFragmentManager.getFragments();
                 Log.d( TAG, "fragmentList.size()->" + fragmentList.size() );
                 for ( int i=0; i<fragmentList.size(); i++ ) {
                     Fragment fragment = fragmentList.get(i);
                     if ( fragment instanceof MyAplListFragment ) {
                         Log.d( TAG, "fragment instanceof MyAplListFragmen" );
-                        //該当のfragment削除
-                        mFragmentManager.beginTransaction().remove( fragment ).commit();
                         mFragmentManager.popBackStack();
                         //ActionBarDrawerのアイコン変更
                         mActionBarDrawerToggle.setHomeAsUpIndicator( R.mipmap.ic_menu_white_24dp ); //set icon (ハンバーガ－).
@@ -221,6 +222,7 @@ public class MainActivity extends AppCompatActivity implements MyAplListFragment
 
                         Log.d( TAG, "fragmentList.size() [2] ->" + fragmentList.size() );
 
+                        invalidateOptionsMenu(); //kick onPrepareOptionsMenu()
                         break;
                     }
                 }
@@ -242,12 +244,19 @@ public class MainActivity extends AppCompatActivity implements MyAplListFragment
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        Log.d( TAG, "onPrepareOptionsMenu() start." );
-        boolean isDrawerOpen = mDrawerLayout.isDrawerOpen( mNavigationView );
-        //ActionBarのメニュー切り替え
-        menu.findItem( R.id.menu01_code ).setVisible( !isDrawerOpen );
-        menu.findItem( R.id.menu02_info ).setVisible( !isDrawerOpen );
-        menu.findItem( R.id.menu03_appl ).setVisible( !isDrawerOpen );
+        Log.d( TAG, "onPrepareOptionsMenu() start. [isDrawerIndicatorEnabled ? " + mActionBarDrawerToggle.isDrawerIndicatorEnabled() +"]" );
+        if ( mActionBarDrawerToggle.isDrawerIndicatorEnabled() ) {
+            boolean isDrawerOpen = mDrawerLayout.isDrawerOpen( mNavigationView );
+            //ActionBarのメニュー切り替え
+            menu.findItem( R.id.menu01_code ).setVisible( !isDrawerOpen );
+            menu.findItem( R.id.menu02_info ).setVisible( !isDrawerOpen );
+            menu.findItem( R.id.menu03_appl ).setVisible( !isDrawerOpen );
+        } else {
+            //ActionBarのメニュー切り替え
+            menu.findItem( R.id.menu01_code ).setVisible( false );
+            menu.findItem( R.id.menu02_info ).setVisible( false );
+            menu.findItem( R.id.menu03_appl ).setVisible( false );
+        }
 
         return super.onPrepareOptionsMenu(menu);
     }
@@ -361,6 +370,7 @@ public class MainActivity extends AppCompatActivity implements MyAplListFragment
             mActionBarDrawerToggle.setHomeAsUpIndicator( R.mipmap.ic_menu_white_24dp ); //set icon (ハンバーガ－).
             mActionBarDrawerToggle.setDrawerIndicatorEnabled( true ); //indicator -> enable
 
+            invalidateOptionsMenu(); //kick onPrepareOptionsMenu()
         }
     }
 }
