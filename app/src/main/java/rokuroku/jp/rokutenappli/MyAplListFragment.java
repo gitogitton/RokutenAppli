@@ -1,10 +1,11 @@
 package rokuroku.jp.rokutenappli;
 
 
-import android.arch.lifecycle.Lifecycle;
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -25,20 +26,20 @@ import android.view.ViewGroup;
 public class MyAplListFragment extends Fragment {
 
     public interface OnFragmentInteractionListener {
-        public void onFragmentInteraction(int id);
+        void onFragmentInteraction(int id);
     }
     private OnFragmentInteractionListener mListener = null;
     static final int KEY_CODE_DOWN = 1;
 
     private final String TAG = getClass().getSimpleName();
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private Activity mActivity;
 
 
     public MyAplListFragment() {
@@ -73,11 +74,6 @@ public class MyAplListFragment extends Fragment {
         }
 
         setHasOptionsMenu( false ); //オプションメニューを使用する事を宣言
-
-        ActionBar actionBar = ( (AppCompatActivity)getActivity() ).getSupportActionBar();
-        actionBar.setTitle( R.string.menu03_appl );
-        actionBar.setDisplayHomeAsUpEnabled( true ); //「←」表示
-
     }
 
     @Override
@@ -105,7 +101,7 @@ public class MyAplListFragment extends Fragment {
         view.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
-                //Log.d( TAG, "onKey() start.keyCode/keyEvent->"+keyCode+" / "+keyEvent );
+                Log.d( TAG, "onKey() start.keyCode/keyEvent->"+keyCode+" / "+keyEvent );
                 if ( keyCode==KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP ) {
                     mListener.onFragmentInteraction( KEY_CODE_DOWN );
                 }

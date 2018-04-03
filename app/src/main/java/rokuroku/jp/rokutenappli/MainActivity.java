@@ -1,6 +1,7 @@
 package rokuroku.jp.rokutenappli;
 
 import android.drm.DrmStore;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.support.v7.widget.Toolbar;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements MyAplListFragment
 
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
+    private ActionBarDrawerToggle mActionBarDrawerToggle;
 
     private FragmentManager mFragmentManager = null;
 
@@ -140,6 +143,13 @@ public class MainActivity extends AppCompatActivity implements MyAplListFragment
         fragmentTransaction.addToBackStack( null );
         fragmentTransaction.commit();
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle( R.string.menu03_appl );
+
+        //IndicatorをDisableにしてからアイコンを変更する。
+        mActionBarDrawerToggle.setDrawerIndicatorEnabled( false ); //indicator -> disable
+        mActionBarDrawerToggle.setHomeAsUpIndicator( R.mipmap.ic_arrow_back_white_24dp ); //set icon (←).
+
         mDrawerLayout.setDrawerLockMode( DrawerLayout.LOCK_MODE_LOCKED_CLOSED ); //navigationDrawerを反応しないようにする。
     }
 
@@ -153,8 +163,8 @@ public class MainActivity extends AppCompatActivity implements MyAplListFragment
         setSupportActionBar( toolbar );
 
         mDrawerLayout = findViewById( R.id.drawer_layout );
-        ActionBarDrawerToggle drawerToggle =new ActionBarDrawerToggle( this, mDrawerLayout, toolbar,
-                                            R.string.navi_drawer_open, R.string.navi_drawer_close ) {
+        mActionBarDrawerToggle =new ActionBarDrawerToggle( this, mDrawerLayout, toolbar,
+                R.string.navi_drawer_open, R.string.navi_drawer_close ) {
             @Override
             public void onDrawerOpened(View drawerView) {
                 Log.d( TAG, "drawer open." );
@@ -170,11 +180,10 @@ public class MainActivity extends AppCompatActivity implements MyAplListFragment
                 toolbar.setTitle( mTitle ); //ActionBarのタイトル変更
                 invalidateOptionsMenu(); //kick onPrepareOptionsMenu()
             }
-
         };
 
-        mDrawerLayout.addDrawerListener( drawerToggle );
-        drawerToggle.syncState();
+        mDrawerLayout.addDrawerListener( mActionBarDrawerToggle );
+        mActionBarDrawerToggle.syncState();
 
         mNavigationView = findViewById( R.id.nav_view );
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -184,6 +193,15 @@ public class MainActivity extends AppCompatActivity implements MyAplListFragment
                 return false;
             }
         });
+
+//setDrawerIndicatorEnabled( false ) の時（Drawerが無効の間）イベントが入ってくる。
+mActionBarDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+        Log.d( TAG, "setToolbarNavigationClickListener.onClick()" );
+    }
+});
+
     }
 
     @Override
@@ -295,12 +313,18 @@ public class MainActivity extends AppCompatActivity implements MyAplListFragment
 
     @Override
     public void onFragmentInteraction(int id) {
-        //Log.d( TAG, "onFragmentInteraction() start. id->"+id );
+        Log.d( TAG, "onFragmentInteraction() start. id->"+id );
         if ( id==MyAplListFragment.KEY_CODE_DOWN ) {
             ActionBar actionBar = getSupportActionBar();
             actionBar.setTitle( mTitle );
-            actionBar.setDisplayHomeAsUpEnabled( false ); //「←」非表示
             mDrawerLayout.setDrawerLockMode( DrawerLayout.LOCK_MODE_UNLOCKED ); //navigationDrawerを反応するようにする。
+            mActionBarDrawerToggle.syncState(); //NavigationDrawerとActionBar同期
+
+//            //IndicatorをDisableにしてからアイコンを変更する。
+//            mActionBarDrawerToggle.setDrawerIndicatorEnabled( false ); //indicator -> disable
+            mActionBarDrawerToggle.setHomeAsUpIndicator( R.mipmap.ic_menu_white_24dp ); //set icon (ハンバーガ－).
+            mActionBarDrawerToggle.setDrawerIndicatorEnabled( true ); //indicator -> enable
+
         }
     }
 }
