@@ -213,6 +213,10 @@ public class MainActivity extends AppCompatActivity implements MyAplListFragment
                     if ( fragment instanceof MyAplListFragment ) {
                         Log.d( TAG, "fragment instanceof MyAplListFragmen" );
                         mFragmentManager.popBackStack();
+                        //ActionBarタイトル変更
+                        ActionBar actionBar = getSupportActionBar();
+                        actionBar.setTitle( mTitle );
+
                         //ActionBarDrawerのアイコン変更
                         mActionBarDrawerToggle.setHomeAsUpIndicator( R.mipmap.ic_menu_white_24dp ); //set icon (ハンバーガ－).
                         mActionBarDrawerToggle.setDrawerIndicatorEnabled( true ); //indicator -> enable
