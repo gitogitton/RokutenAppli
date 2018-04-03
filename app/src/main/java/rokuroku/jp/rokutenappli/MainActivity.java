@@ -2,6 +2,7 @@ package rokuroku.jp.rokutenappli;
 
 import android.drm.DrmStore;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
@@ -31,6 +32,7 @@ import android.widget.TextView;
 import com.astuetz.PagerSlidingTabStrip;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MyAplListFragment.OnFragmentInteractionListener {
 
@@ -194,13 +196,28 @@ public class MainActivity extends AppCompatActivity implements MyAplListFragment
             }
         });
 
-//setDrawerIndicatorEnabled( false ) の時（Drawerが無効の間）イベントが入ってくる。
-mActionBarDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-        Log.d( TAG, "setToolbarNavigationClickListener.onClick()" );
-    }
-});
+        //setDrawerIndicatorEnabled( false ) の時（Drawerが無効の間）イベントが入ってくる。
+        mActionBarDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d( TAG, "setToolbarNavigationClickListener.onClick()" );
+
+                List<Fragment> fragmentList = mFragmentManager.getFragments();
+                Log.d( TAG, "fragments.size()->" + fragmentList.size() );
+                for ( int i=0; i<fragmentList.size(); i++ ) {
+                    Fragment fragment = fragmentList.get(i);
+                    if ( fragment instanceof MyAplListFragment ) {
+                        Log.d( TAG, "fragment instanceof MyAplListFragmen" );
+                        //該当のfragment削除
+                        mFragmentManager.beginTransaction().remove( fragment ).commit();
+                        //ActionBarDrawerのアイコン変更
+                        mActionBarDrawerToggle.setHomeAsUpIndicator( R.mipmap.ic_menu_white_24dp ); //set icon (ハンバーガ－).
+                        mActionBarDrawerToggle.setDrawerIndicatorEnabled( true ); //indicator -> enable
+                        break;
+                    }
+                }
+            }
+        });
 
     }
 
@@ -311,6 +328,7 @@ mActionBarDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListene
         });
     }
 
+    //MyAplListFragmentでBackキーを押下された時呼ばれる。
     @Override
     public void onFragmentInteraction(int id) {
         Log.d( TAG, "onFragmentInteraction() start. id->"+id );
@@ -320,8 +338,7 @@ mActionBarDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListene
             mDrawerLayout.setDrawerLockMode( DrawerLayout.LOCK_MODE_UNLOCKED ); //navigationDrawerを反応するようにする。
             mActionBarDrawerToggle.syncState(); //NavigationDrawerとActionBar同期
 
-//            //IndicatorをDisableにしてからアイコンを変更する。
-//            mActionBarDrawerToggle.setDrawerIndicatorEnabled( false ); //indicator -> disable
+            //IndicatorはDisableのはずだからそのままアイコンを変更する。
             mActionBarDrawerToggle.setHomeAsUpIndicator( R.mipmap.ic_menu_white_24dp ); //set icon (ハンバーガ－).
             mActionBarDrawerToggle.setDrawerIndicatorEnabled( true ); //indicator -> enable
 
