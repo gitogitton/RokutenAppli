@@ -1,14 +1,14 @@
 package rokuroku.jp.rokutenappli;
 
 
-import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -17,6 +17,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
 
 
 /**
@@ -40,8 +44,7 @@ public class MyAplListFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private Activity mActivity;
-
+    private View mView;
 
     public MyAplListFragment() {
         // Required empty public constructor
@@ -83,6 +86,109 @@ public class MyAplListFragment extends Fragment {
     }
 
     @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        //Log.d( TAG, "onCreateView() start." );
+        // Inflate the layout for this fragment
+        mView = inflater.inflate(R.layout.fragment_my_apl_list, container, false);
+
+        mView.setFocusableInTouchMode( true ); //use back key.
+        mView.requestFocus(); //このViewにフォーカスを移す。(フォーカスが無いとダメ)
+
+        mView.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+                Log.d( TAG, "onKey() start.keyCode/keyEvent->"+keyCode+" / "+keyEvent );
+                if ( keyCode==KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP ) {
+                    mListener.onFragmentInteraction( KEY_CODE_DOWN );
+                }
+                return false;
+            }
+        });
+
+        //データ表示
+        setData();
+
+        return mView;
+    }
+
+    private void setData() {
+        ListView listView = mView.findViewById( R.id.list_appl );
+
+        ArrayList<MyAplListRowData> aplListLineDataArrayList;
+        aplListLineDataArrayList = getData();
+
+        MyAplListAdapter myAplListAdapter = new MyAplListAdapter( getContext(), aplListLineDataArrayList );
+        listView.setAdapter( myAplListAdapter );
+    }
+
+    private ArrayList<MyAplListRowData> getData() {
+
+        String[] strMyApl = { "com.example.user.myappl09", "com.example.user.myproject2.main.deb",
+                "com.example.user.wifioperation", "com.example.user.myokusuri.main.debug" };
+
+        ArrayList<MyAplListRowData> arrayList = new ArrayList<>();
+
+        //get label, icon (drawable)
+        PackageManager packageManager = getContext().getPackageManager();
+        PackageInfo packageInfo = null;
+        MyAplListRowData rowData = null;
+        int maxDataNumPerRow = MyAplListRowData.ROW_DATA_NUM;
+        for ( int i=0; i<strMyApl.length; i++ ) {
+            if( ( i % maxDataNumPerRow )==0 ) { //maxDataNumPerRow おきに書き込む（一行あたりのデータTextViewの数）
+                rowData = new MyAplListRowData( getContext() );
+            }
+            try {
+                packageInfo = packageManager.getPackageInfo( strMyApl[i], PackageManager.GET_ACTIVITIES );
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+            if ( packageInfo==null ) {
+                Log.d( TAG, "packageInfo is null." );
+                return null;
+            }
+            ActivityInfo[] activityInfos = packageInfo.activities;
+            Drawable drawable = activityInfos[0].loadIcon(packageManager);
+            drawable.setBounds( 0, 0, drawable.getIntrinsicHeight(), drawable.getIntrinsicWidth() ); //大きさを指定しないと表示しない
+
+            TextView textView = new TextView( getContext() );
+            textView.setCompoundDrawables( null, drawable, null, null );
+            textView.setText( String.valueOf( activityInfos[0].loadLabel( packageManager ) ) );
+
+            rowData.setData( i % maxDataNumPerRow, textView );
+
+            if ( ( i % maxDataNumPerRow )==2 || i==strMyApl.length-1 ) { //maxDataNumPerRow 分たまってから書く
+                arrayList.add( rowData );
+            }
+        } //for(i)
+        return arrayList;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        Log.d( TAG, "onCreateOptionsMenu() start." );
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        Log.d( TAG, "onPrepareOptionsMenu() start." );
+        super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d( TAG, "onOptionsItemSelected() item->"+item );
+        switch ( item.getItemId() ) {
+            case android.R.id.home :
+                Log.d( TAG, "homeAsUp" );
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    @Override
     public void onAttach(Context context) {
         //Log.d( TAG, "onAttach() start." );
         super.onAttach(context);
@@ -94,6 +200,7 @@ public class MyAplListFragment extends Fragment {
         }
     }
 
+    //lifecycle method
     @Override
     public void onStart() {
         Log.d( TAG, "onStart() start." );
@@ -135,54 +242,5 @@ public class MyAplListFragment extends Fragment {
         Log.d( TAG, "onDetach() start." );
         super.onDetach();
         mListener = null;
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        //Log.d( TAG, "onCreateView() start." );
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_my_apl_list, container, false);
-
-        view.setFocusableInTouchMode( true ); //use back key.
-        view.requestFocus(); //このViewにフォーカスを移す。(フォーカスが無いとダメ)
-
-        view.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
-                Log.d( TAG, "onKey() start.keyCode/keyEvent->"+keyCode+" / "+keyEvent );
-                if ( keyCode==KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP ) {
-                    mListener.onFragmentInteraction( KEY_CODE_DOWN );
-                }
-                return false;
-            }
-        });
-
-        return view;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        Log.d( TAG, "onCreateOptionsMenu() start." );
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        Log.d( TAG, "onPrepareOptionsMenu() start." );
-        super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d( TAG, "onOptionsItemSelected() item->"+item );
-        switch ( item.getItemId() ) {
-            case android.R.id.home :
-                Log.d( TAG, "homeAsUp" );
-                break;
-            default:
-                break;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

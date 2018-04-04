@@ -1,16 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MyAplListFragment">
+    tools:context=".MyAplListFragment"
+    android:id="@+id/relativeLayout">
 
-    <TextView
+
+    <ListView
+        android:id="@+id/list_appl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"
-        android:textSize="@dimen/textSizeLarge"
-        android:background="#ff00dd"/>
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:background="@color/colorWhite"
+        android:divider="#00000000" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/emptyView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/emptyView_text"
+        android:textSize="@dimen/textSizeLarge"
+        android:background="#00ffffff"
+        app:layout_constraintTop_toBottomOf="@id/list_appl"
+        app:layout_constraintStart_toEndOf="@id/list_appl" />
+
+</android.support.constraint.ConstraintLayout>
