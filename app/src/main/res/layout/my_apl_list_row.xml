@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/text_myapl_01"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/temporary_textstring"
+        android:textAlignment="center"
+        android:padding="5dp"
+        app:layout_constraintEnd_toStartOf="@+id/text_myapl_02"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/text_myapl_02"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/temporary_textstring"
+        android:textAlignment="center"
+        android:padding="5dp"
+        app:layout_constraintEnd_toStartOf="@+id/text_myapl_03"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toEndOf="@+id/text_myapl_01" />
+
+    <TextView
+        android:id="@+id/text_myapl_03"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/temporary_textstring"
+        android:textAlignment="center"
+        android:padding="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toEndOf="@+id/text_myapl_02" />
+
+</android.support.constraint.ConstraintLayout>
