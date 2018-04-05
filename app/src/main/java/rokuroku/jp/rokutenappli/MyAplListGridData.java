@@ -6,10 +6,17 @@ import android.widget.TextView;
 
 public class MyAplListGridData {
 
-    ImageView mImageView;
-    TextView mTextView;
+    private ImageView mImageView;
+    private TextView mTextView;
+    private String mPackageName;
 
     //getter, setter
+    public String getPackageName() {
+        return this.mPackageName;
+    }
+    public void setPackageName( String packageName ) {
+        this.mPackageName = packageName;
+    }
     public ImageView getImageView() {
         return mImageView;
     }

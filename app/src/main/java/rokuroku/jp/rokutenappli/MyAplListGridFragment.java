@@ -1,6 +1,7 @@
 package rokuroku.jp.rokutenappli;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -8,9 +9,11 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -79,14 +82,52 @@ public class MyAplListGridFragment extends Fragment {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_my_apl_list_grid, container, false);
 
-        ArrayList<MyAplListGridData> arrayList = getData();
+        mView.setFocusableInTouchMode( true ); //use back key.
+        mView.requestFocus(); //このViewにフォーカスを移す。(フォーカスが無いとダメ)
 
+        mView.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+                Log.d( TAG, "onKey() start.keyCode/keyEvent->"+keyCode+" / "+keyEvent );
+                if ( keyCode==KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP ) {
+                    mListener.onFragmentInteraction( BACK_KEY );
+                }
+                return false;
+            }
+        });
+
+        ArrayList<MyAplListGridData> arrayList = getData();
         MyAplListGridAdapter myAplListGridAdapter = new MyAplListGridAdapter(  getContext(), arrayList );
 
         GridView gridView = mView.findViewById( R.id.grid_apllist );
         gridView.setAdapter( myAplListGridAdapter );
 
+        //set listener to gridview.
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Log.d( TAG, "GridView.OnItemClick() position/id->" + position + " / " + id );
+                launchTappedApplication( parent, view, position, id );
+            }
+        });
+
         return mView;
+    }
+
+    private void launchTappedApplication( AdapterView<?> parent, View view, int position, long id ) {
+
+        MyAplListGridData item = (MyAplListGridData) parent.getItemAtPosition( position );
+
+        PackageManager packageManager = getContext().getPackageManager();
+        Intent intent = packageManager.getLaunchIntentForPackage( item.getPackageName() );
+        if ( intent==null || intent.resolveActivity( packageManager )==null ) { //resolveActivity() : 該当するアプリが１つ以上あるか確認（無＝null）
+            Log.d( TAG, "package not found. [ " + item.getPackageName() + " ]" );
+            return;
+        }
+        //execute application
+        startActivity( intent );
+
+        return;
     }
 
     private ArrayList<MyAplListGridData> getData() {
@@ -124,6 +165,8 @@ public class MyAplListGridFragment extends Fragment {
             imageView.setImageDrawable( drawable );
             gridData.setImageView( imageView );
 
+            gridData.setPackageName(  strMyApl[i] );
+
             arrayList.add( gridData );
 
         } //for(i)
@@ -133,6 +176,7 @@ public class MyAplListGridFragment extends Fragment {
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed( int id ) {
+        Log.d( TAG, "onButtonPressed()" );
         if (mListener != null) {
             mListener.onFragmentInteraction( id );
         }
@@ -155,18 +199,7 @@ public class MyAplListGridFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction( int id );
     }
 }
