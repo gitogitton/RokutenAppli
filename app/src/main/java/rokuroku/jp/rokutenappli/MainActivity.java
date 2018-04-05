@@ -99,43 +99,19 @@ public class MainActivity extends AppCompatActivity implements MyAplListFragment
                 return true;
             case R.id.menu03_appl :
                 Log.d( TAG, "menu->menu03_appl" );
-                showMyAplList();
+                showMyAplList(); //「Ｍｙアプリ一覧」をListViewで表示
+//                showMyAplListGrid(); //「Ｍｙアプリ一覧」をGridViewで表示
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
+    private void showMyAplListGrid() {
+
+    }
+
     private void showMyAplList() {
-
-        String[] strPckgName = {
-                "com.example.user.myappl09", "com.example.user.myproject2.main.deb",
-                "com.example.user.wifioperation", "com.example.user.myokusuri.main.debug" };
-
-        String[] strLabel = new String[ strPckgName.length ];
-        Drawable[] drwbleIcon = new Drawable[ strPckgName.length ];
-        Intent[] intents = new Intent[ strPckgName.length ];
-
-        //get label, icon (drawable)
-        PackageManager packageManager = getPackageManager();
-        PackageInfo packageInfo = null;
-        for ( int i=0; i<strPckgName.length; i++ ) {
-            try {
-                packageInfo = packageManager.getPackageInfo( strPckgName[i], PackageManager.GET_ACTIVITIES );
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
-            }
-            if ( packageInfo==null ) {
-                Log.d( TAG, "packageInfo is null." );
-                return;
-            }
-            ActivityInfo[] activityInfos = packageInfo.activities;
-            if ( activityInfos.length > 0 ) {
-                drwbleIcon[ i ] = activityInfos[ 0 ].loadIcon( packageManager ); //get icon
-                strLabel[ i ] = String.valueOf( activityInfos[ 0 ].loadLabel( packageManager ) ); //get label
-                intents[ i ] = packageManager.getLaunchIntentForPackage( activityInfos[ 0 ].packageName ); //get intent for kick this appli
-            }
-        } //for(i)
 
         FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
         MyAplListFragment myAplListFragment = MyAplListFragment.newInstance( "param1","param2" );
