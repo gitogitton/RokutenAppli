@@ -32,12 +32,10 @@ public class MyAplListGridFragment extends Fragment {
 
     final String TAG = getClass().getSimpleName();
 
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
@@ -57,7 +55,6 @@ public class MyAplListGridFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment MyAplListGridFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static MyAplListGridFragment newInstance(String param1, String param2) {
         MyAplListGridFragment fragment = new MyAplListGridFragment();
         Bundle args = new Bundle();
@@ -126,8 +123,6 @@ public class MyAplListGridFragment extends Fragment {
         }
         //execute application
         startActivity( intent );
-
-        return;
     }
 
     private ArrayList<MyAplListGridData> getData() {
@@ -140,46 +135,38 @@ public class MyAplListGridFragment extends Fragment {
         //get label, icon (drawable)
         PackageManager packageManager = getContext().getPackageManager();
         PackageInfo packageInfo = null;
-        for ( int i=0; i<strMyApl.length; i++ ) {
+        for (String aStrMyApl : strMyApl) {
 
             try {
-                packageInfo = packageManager.getPackageInfo( strMyApl[i], PackageManager.GET_ACTIVITIES );
+                packageInfo = packageManager.getPackageInfo(aStrMyApl, PackageManager.GET_ACTIVITIES);
             } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
             }
-            if ( packageInfo==null ) {
-                Log.d( TAG, "packageInfo is null." );
+            if (packageInfo == null) {
+                Log.d(TAG, "packageInfo is null.");
                 return null;
             }
 
             ActivityInfo[] activityInfos = packageInfo.activities;
             MyAplListGridData gridData = new MyAplListGridData();
 
-            TextView textView = new TextView( getContext() );
-            textView.setText( String.valueOf( activityInfos[0].loadLabel( packageManager ) ) );
-            gridData.setTextView( textView );
+            TextView textView = new TextView(getContext());
+            textView.setText(String.valueOf(activityInfos[0].loadLabel(packageManager)));
+            gridData.setTextView(textView);
 
             Drawable drawable = activityInfos[0].loadIcon(packageManager);
-            drawable.setBounds( 0, 0, drawable.getIntrinsicHeight(), drawable.getIntrinsicWidth() ); //大きさを指定しないと表示しない
-            ImageView imageView = new ImageView( getContext() );
-            imageView.setImageDrawable( drawable );
-            gridData.setImageView( imageView );
+            drawable.setBounds(0, 0, drawable.getIntrinsicHeight(), drawable.getIntrinsicWidth()); //大きさを指定しないと表示しない
+            ImageView imageView = new ImageView(getContext());
+            imageView.setImageDrawable(drawable);
+            gridData.setImageView(imageView);
 
-            gridData.setPackageName(  strMyApl[i] );
+            gridData.setPackageName(aStrMyApl);
 
-            arrayList.add( gridData );
+            arrayList.add(gridData);
 
         } //for(i)
 
         return arrayList;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed( int id ) {
-        Log.d( TAG, "onButtonPressed()" );
-        if (mListener != null) {
-            mListener.onFragmentInteraction( id );
-        }
     }
 
     @Override
