@@ -34,7 +34,7 @@ public class MyAplListFragment extends Fragment {
         void onFragmentInteraction(int id);
     }
     private OnFragmentInteractionListener mListener = null;
-    static final int KEY_CODE_DOWN = 1;
+    static final int BACK_KEY = 1;
 
     private final String TAG = getClass().getSimpleName();
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -100,7 +100,7 @@ public class MyAplListFragment extends Fragment {
             public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
                 Log.d( TAG, "onKey() start.keyCode/keyEvent->"+keyCode+" / "+keyEvent );
                 if ( keyCode==KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP ) {
-                    mListener.onFragmentInteraction( KEY_CODE_DOWN );
+                    mListener.onFragmentInteraction( BACK_KEY );
                 }
                 return false;
             }

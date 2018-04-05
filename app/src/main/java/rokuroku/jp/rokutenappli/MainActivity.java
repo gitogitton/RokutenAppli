@@ -32,7 +32,8 @@ import com.astuetz.PagerSlidingTabStrip;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements MyAplListFragment.OnFragmentInteractionListener {
+//public class MainActivity extends AppCompatActivity implements MyAplListFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements MyAplListGridFragment.OnFragmentInteractionListener {
 
     private final String TAG = getClass().getSimpleName();
     private ArrayList<TextView> mArrayList = new ArrayList<>();
@@ -99,8 +100,8 @@ public class MainActivity extends AppCompatActivity implements MyAplListFragment
                 return true;
             case R.id.menu03_appl :
                 Log.d( TAG, "menu->menu03_appl" );
-                showMyAplList(); //「Ｍｙアプリ一覧」をListViewで表示
-//                showMyAplListGrid(); //「Ｍｙアプリ一覧」をGridViewで表示
+//                showMyAplList(); //「Ｍｙアプリ一覧」をListViewで表示（アプリアイコンをタップしてもアプリを起動しない）
+                showMyAplListGrid(); //「Ｍｙアプリ一覧」をGridViewで表示（アプリアイコンをタップしてアプリを起動する）
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -109,6 +110,24 @@ public class MainActivity extends AppCompatActivity implements MyAplListFragment
 
     private void showMyAplListGrid() {
 
+        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+        MyAplListGridFragment myAplListGridFragment = MyAplListGridFragment.newInstance( "param1","param2" );
+        fragmentTransaction.add(R.id.fragment_container, myAplListGridFragment);
+        fragmentTransaction.addToBackStack( null );
+        fragmentTransaction.commit();
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle( R.string.menu03_appl );
+
+        //IndicatorをDisableにしてからアイコンを変更する。
+        mActionBarDrawerToggle.setDrawerIndicatorEnabled( false ); //indicator -> disable
+        mActionBarDrawerToggle.setHomeAsUpIndicator( R.mipmap.ic_arrow_back_white_24dp ); //set icon (←).
+
+        //navigationDrawerを反応しないようにする。
+        mDrawerLayout.setDrawerLockMode( DrawerLayout.LOCK_MODE_LOCKED_CLOSED );
+
+        //actionbar のメニュー非表示に
+        invalidateOptionsMenu(); //kick onPrepareOptionsMenu()
     }
 
     private void showMyAplList() {
@@ -174,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements MyAplListFragment
             }
         });
 
-        //setDrawerIndicatorEnabled( false ) の時（Drawerが無効の間）イベントが入ってくる。
+        //setDrawerIndicatorEnabled( false ) の時（Drawerが無効の間）イベントが入ってくる。(Upキー「←」)
         mActionBarDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -183,8 +202,9 @@ public class MainActivity extends AppCompatActivity implements MyAplListFragment
                 Log.d( TAG, "fragmentList.size()->" + fragmentList.size() );
                 for ( int i=0; i<fragmentList.size(); i++ ) {
                     Fragment fragment = fragmentList.get(i);
-                    if ( fragment instanceof MyAplListFragment ) {
-                        Log.d( TAG, "fragment instanceof MyAplListFragmen" );
+                    if ( fragment instanceof MyAplListFragment ||
+                            fragment instanceof MyAplListGridFragment ) {
+                        Log.d( TAG, "fragment instanceof MyAplListFragment or MyAplListGridFragment" );
                         mFragmentManager.popBackStack();
                         //ActionBarタイトル変更
                         ActionBar actionBar = getSupportActionBar();
@@ -337,12 +357,13 @@ public class MainActivity extends AppCompatActivity implements MyAplListFragment
     @Override
     public void onFragmentInteraction(int id) {
         Log.d( TAG, "onFragmentInteraction() start. id->"+id );
-        if ( id==MyAplListFragment.KEY_CODE_DOWN ) {
+        if ( id == MyAplListFragment.BACK_KEY ||
+                id == MyAplListGridFragment.BACK_KEY ) { //enum class で(?) event定義を統一したいなぁ・・・
+
             ActionBar actionBar = getSupportActionBar();
             actionBar.setTitle( mTitle );
             mDrawerLayout.setDrawerLockMode( DrawerLayout.LOCK_MODE_UNLOCKED ); //navigationDrawerを反応するようにする。
             mActionBarDrawerToggle.syncState(); //NavigationDrawerとActionBar同期
-
             //IndicatorはDisableのはずだからそのままアイコンを変更する。
             mActionBarDrawerToggle.setHomeAsUpIndicator( R.mipmap.ic_menu_white_24dp ); //set icon (ハンバーガ－).
             mActionBarDrawerToggle.setDrawerIndicatorEnabled( true ); //indicator -> enable

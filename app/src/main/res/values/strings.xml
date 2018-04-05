@@ -26,6 +26,8 @@
 
     //for My apl list
     <string name="emptyView_text">アプリは有りません。</string>
+    <string name="grid_item_desc">contentsDescription</string>
+
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
