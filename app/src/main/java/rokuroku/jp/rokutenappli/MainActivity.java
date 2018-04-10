@@ -3,11 +3,6 @@ package rokuroku.jp.rokutenappli;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.ViewPager;
@@ -33,7 +28,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 //public class MainActivity extends AppCompatActivity implements MyAplListFragment.OnFragmentInteractionListener {
-public class MainActivity extends AppCompatActivity implements MyAplListGridFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity
+        implements MyAplListGridFragment.OnFragmentInteractionListener, MyInfoListFragment.OnFragmentInteractionListener {
+//リスナーを統一した方がいいかなぁ・・・・、出来るのかなぁ・・・・
 
     private final String TAG = getClass().getSimpleName();
     private ArrayList<TextView> mArrayList = new ArrayList<>();
@@ -97,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements MyAplListGridFrag
                 return true;
             case R.id.menu02_info :
                 Log.d( TAG, "menu->menu02_info" );
+                showInfoList();
                 return true;
             case R.id.menu03_appl :
                 Log.d( TAG, "menu->menu03_appl" );
@@ -106,6 +104,27 @@ public class MainActivity extends AppCompatActivity implements MyAplListGridFrag
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void showInfoList() {
+        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+        MyInfoListFragment myInfoListFragment = MyInfoListFragment.newInstance( "param1","param2" );
+        fragmentTransaction.add(R.id.fragment_container, myInfoListFragment);
+        fragmentTransaction.addToBackStack( null );
+        fragmentTransaction.commit();
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle( R.string.menu02_info );
+
+        //IndicatorをDisableにしてからアイコンを変更する。
+        mActionBarDrawerToggle.setDrawerIndicatorEnabled( false ); //indicator -> disable
+        mActionBarDrawerToggle.setHomeAsUpIndicator( R.mipmap.ic_arrow_back_white_24dp ); //set icon (←).
+
+        //navigationDrawerを反応しないようにする。
+        mDrawerLayout.setDrawerLockMode( DrawerLayout.LOCK_MODE_LOCKED_CLOSED );
+
+        //actionbar のメニュー非表示に
+        invalidateOptionsMenu(); //kick onPrepareOptionsMenu()
     }
 
     private void showMyAplListGrid() {
@@ -130,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements MyAplListGridFrag
         invalidateOptionsMenu(); //kick onPrepareOptionsMenu()
     }
 
+    //ListView版アプリ一覧（アプリ毎の起動は出来ない。現在はGridView版が有効。呼び元をコメントで切り替え。）
     private void showMyAplList() {
 
         FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
@@ -203,8 +223,9 @@ public class MainActivity extends AppCompatActivity implements MyAplListGridFrag
                 for ( int i=0; i<fragmentList.size(); i++ ) {
                     Fragment fragment = fragmentList.get(i);
                     if ( fragment instanceof MyAplListFragment ||
-                            fragment instanceof MyAplListGridFragment ) {
-                        Log.d( TAG, "fragment instanceof MyAplListFragment or MyAplListGridFragment" );
+                            fragment instanceof MyAplListGridFragment ||
+                            fragment instanceof MyInfoListFragment ) {
+                        Log.d( TAG, "push Up key on fragment." );
                         mFragmentManager.popBackStack();
                         //ActionBarタイトル変更
                         ActionBar actionBar = getSupportActionBar();
@@ -358,7 +379,8 @@ public class MainActivity extends AppCompatActivity implements MyAplListGridFrag
     public void onFragmentInteraction(int id) {
         Log.d( TAG, "onFragmentInteraction() start. id->"+id );
         if ( id == MyAplListFragment.BACK_KEY ||
-                id == MyAplListGridFragment.BACK_KEY ) { //enum class で(?) event定義を統一したいなぁ・・・
+                id == MyAplListGridFragment.BACK_KEY ||
+                id == MyInfoListFragment.BACK_KEY ) { //enum class で(?) event定義を統一したいなぁ・・・
 
             ActionBar actionBar = getSupportActionBar();
             actionBar.setTitle( mTitle );
