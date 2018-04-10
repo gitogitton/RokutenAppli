@@ -16,6 +16,7 @@
         android:layout_height="match_parent" />
 
     <!-- Navigation Drawer （されるメニュー内容） -->
+    <!-- widget.NavigationView に拘らず ListView とか用途に応じて選べばいい（？）。 -->
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
@@ -23,6 +24,7 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_main"
-        app:menu="@menu/activity_main_drawer" />
+        app:menu="@menu/activity_main_drawer"
+        app:itemTextColor="@color/colorAccent" />
 
 </android.support.v4.widget.DrawerLayout>

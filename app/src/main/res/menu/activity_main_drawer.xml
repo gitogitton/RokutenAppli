@@ -1,23 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/group_01"
+        android:checkableBehavior="single" >
         <item
             android:id="@+id/nav_menu01"
-            android:title="1111" />
+            android:title="@string/menu03_appl"
+            android:icon="@mipmap/ic_apps_white_24dp"/>
+     </group>
+
+    <group
+        android:id="@+id/group_02"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_menu02"
-            android:title="2222" />
+            android:title="@string/menu02_info"
+            android:icon="@mipmap/ic_announcement_white_24dp"/>
     </group>
 
-    <item android:title="Communication">
+    <item
+        android:title="COMMUNICATION" >
         <menu>
             <item
                 android:id="@+id/nav_menu03"
-                android:title="3333" />
+                android:title="@string/menu04_browser"
+                android:icon="@mipmap/chrome" />
             <item
                 android:id="@+id/nav_menu04"
-                android:title="4444" />
+                android:title="" />
         </menu>
     </item>
 

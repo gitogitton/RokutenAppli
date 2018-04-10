@@ -23,6 +23,7 @@
     <string name="menu01_code">？？</string>
     <string name="menu02_info">お知らせ</string>
     <string name="menu03_appl">Ｍｙアプリ一覧</string>
+    <string name="menu04_browser">ブラウザ起動</string>
 
     //for My apl list
     <string name="emptyView_text">アプリは有りません。</string>

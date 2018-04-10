@@ -1,5 +1,8 @@
 package rokuroku.jp.rokutenappli;
 
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -208,7 +211,27 @@ public class MainActivity extends AppCompatActivity
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Log.d( TAG, "navigationView push menu." );
+                switch ( item.getItemId() ) {
+                    case R.id.nav_menu01 : //アプリ一覧
+                        Log.d( TAG, "navigationView push nav_menu01." + item.getItemId() );
+//                        showMyAplList(); //ListIViewで一覧。タップで起動できない。
+                        showMyAplListGrid(); //GridViewで一覧。タップで起動。
+                        break;
+                    case R.id.nav_menu02 : //お知らせ一覧
+                        Log.d( TAG, "navigationView push nav_menu02." + item.getItemId() );
+                        showInfoList();
+                        break;
+                    case R.id.nav_menu03 : //browser
+                        Log.d( TAG, "navigationView push nav_menu03." + item.getItemId() );
+                        launchBrowser();
+                        break;
+                    case R.id.nav_menu04 : //未定義
+                        Log.d( TAG, "navigationView push nav_menu04." + item.getItemId() );
+                        break;
+                    default :
+                        Log.d( TAG, "navigationView push [default]." + item.getItemId() );
+                        break;
+                }
                 return false;
             }
         });
@@ -247,6 +270,12 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+    }
+
+    private void launchBrowser() {
+        Uri uri = Uri.parse( "https://www.google.co.jp/" );
+        Intent intent = new Intent( Intent.ACTION_VIEW, uri );
+        startActivity( intent );
     }
 
     @Override
