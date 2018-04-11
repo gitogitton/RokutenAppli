@@ -1,7 +1,6 @@
 package rokuroku.jp.rokutenappli;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -45,7 +44,6 @@ public class MainActivity extends AppCompatActivity
 
     private FragmentManager mFragmentManager = null;
 
-    private String mDrawerTitle;
     private String mTitle;
 
     @Override
@@ -53,7 +51,6 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mDrawerTitle = getString( R.string.nav_header_title );
         mTitle = getString( R.string.app_name );
 
         init();
@@ -191,7 +188,7 @@ public class MainActivity extends AppCompatActivity
             public void onDrawerOpened(View drawerView) {
                 Log.d( TAG, "drawer open." );
                 super.onDrawerOpened(drawerView);
-                toolbar.setTitle( mDrawerTitle ); //ActionBarのタイトル変更
+                //toolbar.setTitle( mDrawerTitle ); //ActionBarのタイトル変更
                 invalidateOptionsMenu(); //kick onPrepareOptionsMenu()
             }
 
@@ -199,7 +196,7 @@ public class MainActivity extends AppCompatActivity
             public void onDrawerClosed(View drawerView) {
                 Log.d( TAG, "drawer close." );
                 super.onDrawerClosed(drawerView);
-                toolbar.setTitle( mTitle ); //ActionBarのタイトル変更
+                //toolbar.setTitle( mTitle ); //ActionBarのタイトル変更
                 invalidateOptionsMenu(); //kick onPrepareOptionsMenu()
             }
         };
