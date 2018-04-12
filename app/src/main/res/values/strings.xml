@@ -25,6 +25,10 @@
     <string name="menu03_appl">Ｍｙアプリ一覧</string>
     <string name="menu04_browser">ブラウザ起動</string>
 
+    //for description of image
+    <string name="desc_image">少しだけ拡大</string>
+    <string name="text_guide">タップすると少しだけ拡大します。</string>
+
     //for My apl list
     <string name="emptyView_text">アプリは有りません。</string>
     <string name="grid_item_desc">contentsDescription</string>

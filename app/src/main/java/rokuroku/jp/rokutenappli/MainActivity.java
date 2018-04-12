@@ -1,6 +1,8 @@
 package rokuroku.jp.rokutenappli;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -31,7 +34,7 @@ import java.util.List;
 
 //public class MainActivity extends AppCompatActivity implements MyAplListFragment.OnFragmentInteractionListener {
 public class MainActivity extends AppCompatActivity
-        implements MyAplListGridFragment.OnFragmentInteractionListener, MyInfoListFragment.OnFragmentInteractionListener {
+        implements MyAplListGridFragment.OnFragmentInteractionListener, MyInfoListFragment.OnFragmentInteractionListener, MyDescImageFragment.OnFragmentInteractionListener {
 //リスナーを統一した方がいいかなぁ・・・・、出来るのかなぁ・・・・
 
     private final String TAG = getClass().getSimpleName();
@@ -244,7 +247,8 @@ public class MainActivity extends AppCompatActivity
                     Fragment fragment = fragmentList.get(i);
                     if ( fragment instanceof MyAplListFragment ||
                             fragment instanceof MyAplListGridFragment ||
-                            fragment instanceof MyInfoListFragment ) {
+                            fragment instanceof MyInfoListFragment ||
+                            fragment instanceof MyDescImageFragment ) {
                         Log.d( TAG, "push Up key on fragment." );
                         mFragmentManager.popBackStack();
                         //ActionBarタイトル変更
@@ -400,13 +404,61 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+    public void onClickImage1( View view ) {
+        //Log.d( TAG, "onClickImage1() view->" + view );
+        showDescriptionOfImage( view );
+    }
+    public void onClickImage2( View view ) {
+        //Log.d( TAG, "onClickImage2() view->" + view );
+        showDescriptionOfImage( view );
+    }
+    public void onClickImage3( View view ) {
+        //Log.d( TAG, "onClickImage3() view->" + view );
+        showDescriptionOfImage( view );
+    }
+
+    private void showDescriptionOfImage( View view ) {
+        ImageView imageView = (ImageView)view;
+        Bitmap bitmap = ( (BitmapDrawable)imageView.getDrawable() ).getBitmap();
+
+        Log.d( TAG, "id->" + imageView.getId() );
+
+        MyDrawableData myDrawableData = new MyDrawableData();
+        myDrawableData.setDrawable( imageView.getDrawable() );
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable( "drawable", myDrawableData );
+
+        MyDescImageFragment myDescImageFragment = new MyDescImageFragment();
+        myDescImageFragment.setArguments( bundle );
+
+        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.fragment_container, myDescImageFragment);
+        fragmentTransaction.addToBackStack( null );
+        fragmentTransaction.commit();
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle( R.string.desc_image );
+
+        //IndicatorをDisableにしてからアイコンを変更する。
+        mActionBarDrawerToggle.setDrawerIndicatorEnabled( false ); //indicator -> disable
+        mActionBarDrawerToggle.setHomeAsUpIndicator( R.mipmap.ic_arrow_back_white_24dp ); //set icon (←).
+
+        //navigationDrawerを反応しないようにする。
+        mDrawerLayout.setDrawerLockMode( DrawerLayout.LOCK_MODE_LOCKED_CLOSED );
+
+        //actionbar のメニュー非表示に
+        invalidateOptionsMenu(); //kick onPrepareOptionsMenu()
+    }
+
     //MyAplListFragmentでBackキーを押下された時呼ばれる。
     @Override
-    public void onFragmentInteraction(int id) {
+    public void onFragmentInteraction( int id) {
         Log.d( TAG, "onFragmentInteraction() start. id->"+id );
         if ( id == MyAplListFragment.BACK_KEY ||
                 id == MyAplListGridFragment.BACK_KEY ||
-                id == MyInfoListFragment.BACK_KEY ) { //enum class で(?) event定義を統一したいなぁ・・・
+                id == MyInfoListFragment.BACK_KEY ||
+                id == MyDescImageFragment.BACK_KEY ) { //enum class で(?) event定義を統一したいなぁ・・・
 
             ActionBar actionBar = getSupportActionBar();
             actionBar.setTitle( mTitle );
