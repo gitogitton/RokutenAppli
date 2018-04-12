@@ -16,6 +16,13 @@ import android.widget.LinearLayout;
 public class MyViewPagerAdapter extends PagerAdapter {
 
     private Context mContext;
+    private LayoutInflater mLayoutInflater;
+    class childViews {
+        ImageView imageView1;
+        ImageView imageView2;
+        ImageView imageView3;
+    };
+    private childViews mChildViews;
     private int mResourceIds[] = { R.mipmap.bijiri, R.mipmap.gohanwomatu, R.mipmap.kaseifuwamita,
             R.mipmap.keikaisuru, R.mipmap.nekopoi, R.mipmap.nemureru,
             R.mipmap.ryakudatumofu, R.mipmap.shogekinosinjitu, R.mipmap.yaseiwowasureta,
@@ -43,10 +50,15 @@ public class MyViewPagerAdapter extends PagerAdapter {
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+        mLayoutInflater = (LayoutInflater) mContext.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
         View itemView;
-        if (layoutInflater != null) {
-            itemView = layoutInflater.inflate( R.layout.layout_swiped, container, false );
+        if (mLayoutInflater != null) {
+            itemView = mLayoutInflater.inflate( R.layout.layout_swiped, container, false );
+            mChildViews = new childViews();
+            mChildViews.imageView1 = itemView.findViewById( R.id.imageView1 );
+            mChildViews.imageView2 = itemView.findViewById( R.id.imageView2 );
+            mChildViews.imageView3 = itemView.findViewById( R.id.imageView3 );
+
         } else {
             throw new NullPointerException("layoutInflater required Non Null.");
         }
@@ -55,19 +67,15 @@ public class MyViewPagerAdapter extends PagerAdapter {
             throw new NullPointerException("itemView required Non Null.");
         }
 
-        ImageView imageView1 = itemView.findViewById( R.id.imageView1 );
-        ImageView imageView2 = itemView.findViewById( R.id.imageView2 );
-        ImageView imageView3 = itemView.findViewById( R.id.imageView3 );
-
         int startPos = position * IMAGE_NUM_IN_PAGE;
-        if (imageView1 != null) {
-            imageView1.setImageResource( mResourceIds[ startPos ] );
+        if (mChildViews.imageView1 != null) {
+            mChildViews.imageView1.setImageResource( mResourceIds[ startPos ] );
         }
-        if (imageView2 != null) {
-            imageView2.setImageResource( mResourceIds[ startPos+1 ] );
+        if (mChildViews.imageView2 != null) {
+            mChildViews.imageView2.setImageResource( mResourceIds[ startPos+1 ] );
         }
-        if (imageView3 != null) {
-            imageView3.setImageResource( mResourceIds[ startPos+2 ] );
+        if (mChildViews.imageView3 != null) {
+            mChildViews.imageView3.setImageResource( mResourceIds[ startPos+2 ] );
         }
 
         container.addView( itemView );

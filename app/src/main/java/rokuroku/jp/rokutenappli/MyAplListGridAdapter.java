@@ -15,7 +15,11 @@ import java.util.List;
 public class MyAplListGridAdapter extends ArrayAdapter<MyAplListGridData> {
 
     private LayoutInflater mInflater;
-
+    class chidViews {
+        ImageView imageView;
+        TextView textView;
+    };
+    private chidViews mChildViews;
     public MyAplListGridAdapter(@NonNull Context context, @NonNull List<MyAplListGridData> objects) {
         super(context, 0, objects);
         mInflater = LayoutInflater.from( context );
@@ -39,21 +43,20 @@ public class MyAplListGridAdapter extends ArrayAdapter<MyAplListGridData> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         if ( convertView == null ) {
             convertView = mInflater.inflate( R.layout.grid_item, parent, false );
+            //childView 取得
+            mChildViews = new chidViews();
+            mChildViews.imageView = convertView.findViewById( R.id.image_apl );
+            mChildViews.textView = convertView.findViewById( R.id.text_apl_name );
         }
-
-        //view 取得
-        ImageView imageView = convertView.findViewById( R.id.image_apl );
-        TextView textView = convertView.findViewById( R.id.text_apl_name );
 
         //指定行のデータ
         MyAplListGridData item = getItem( position );
 
         //データセット
-        imageView.setImageDrawable( item.getImageView().getDrawable() );
-        textView.setText( item.getTextView().getText() ); ;
+        mChildViews.imageView.setImageDrawable( item.getImageView().getDrawable() );
+        mChildViews.textView.setText( item.getTextView().getText() ); ;
 
         return convertView;
     }
