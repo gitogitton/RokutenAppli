@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -89,24 +90,28 @@ public class MyDescImageFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        final ImageView imageView = view.findViewById( R.id.imageView4 );
-        imageView.setImageDrawable( mArgument.getDrawable() );
-
-        imageView.setOnClickListener(new View.OnClickListener() {
+        TextView textView = view.findViewById( R.id.textView2 );
+        textView.setCompoundDrawables( null, null, null, mArgument.getDrawable() );
+        textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                //Log.d( TAG, "tap textview" );
                 ImageView img = new ImageView( mContext );
-                Bitmap bitmap = ( (BitmapDrawable)imageView.getDrawable() ).getBitmap();
+                Bitmap bitmap = ( (BitmapDrawable)mArgument.getDrawable() ).getBitmap();
                 img.setImageBitmap( bitmap );
-
                 // ディスプレイの幅を取得する（API 13以上）
                 Display display =  ( (Activity)mContext ).getWindowManager().getDefaultDisplay();
                 Point size = new Point();
                 display.getSize( size );
                 int width = size.x;
+                int height = size.y;
 
-                float factor =  width / bitmap.getWidth();
+                float factor;
+                if ( width < height ) {
+                    factor = width / bitmap.getWidth();
+                } else {
+                    factor = height / bitmap.getHeight();
+                }
                 Log.d("Tap Image", "factor の値 = "+ factor);
 
                 img.setScaleType(ImageView.ScaleType.FIT_CENTER);
