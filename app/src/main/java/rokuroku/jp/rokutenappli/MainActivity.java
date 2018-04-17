@@ -45,23 +45,41 @@ public class MainActivity extends AppCompatActivity
     private NavigationView mNavigationView;
     private ActionBarDrawerToggle mActionBarDrawerToggle;
 
-    private FragmentManager mFragmentManager = null;
-
     private String mTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d( TAG, "activity->onCreate() arg=" + savedInstanceState );
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         mTitle = getString( R.string.app_name );
-
         init();
+    }
 
-        //fragment
-        if ( savedInstanceState==null ) {
-            mFragmentManager = getSupportFragmentManager();
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        Log.d( TAG, "activity->onSaveInstanceState() arg=" + outState );
+        super.onSaveInstanceState(outState);
+        outState.putString( "TITLE", mTitle ); //save screen title.
+        outState.putBoolean( "DRAWER_INDICATOR_STATUS", mActionBarDrawerToggle.isDrawerIndicatorEnabled() ); //save drawable indicator condition.
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        Log.d( TAG, "activity->onRestoreInstanceState() arg=" + savedInstanceState );
+        super.onRestoreInstanceState(savedInstanceState);
+        //reset screen title.
+        mTitle = savedInstanceState.getString( "TITLE" );
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle( mTitle );
+        //reset drawable indicator.
+        boolean drawerIndicator = savedInstanceState.getBoolean( "DRAWER_INDICATOR_STATUS" );
+        mActionBarDrawerToggle.setDrawerIndicatorEnabled( drawerIndicator );
+        if ( !drawerIndicator ) {
+            mActionBarDrawerToggle.setHomeAsUpIndicator( R.mipmap.ic_arrow_back_white_24dp ); //set icon (←).
         }
+        //reset action bar menu.
+        invalidateOptionsMenu();
     }
 
     @Override
@@ -110,14 +128,15 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void showInfoList() {
-        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         MyInfoListFragment myInfoListFragment = MyInfoListFragment.newInstance( "param1","param2" );
         fragmentTransaction.add(R.id.fragment_container, myInfoListFragment);
         fragmentTransaction.addToBackStack( null );
         fragmentTransaction.commit();
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle( R.string.menu02_info );
+        mTitle = getString( R.string.menu02_info );
+        actionBar.setTitle( mTitle );
 
         //IndicatorをDisableにしてからアイコンを変更する。
         mActionBarDrawerToggle.setDrawerIndicatorEnabled( false ); //indicator -> disable
@@ -132,14 +151,15 @@ public class MainActivity extends AppCompatActivity
 
     private void showMyAplListGrid() {
 
-        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         MyAplListGridFragment myAplListGridFragment = MyAplListGridFragment.newInstance( "param1","param2" );
         fragmentTransaction.add(R.id.fragment_container, myAplListGridFragment);
         fragmentTransaction.addToBackStack( null );
         fragmentTransaction.commit();
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle( R.string.menu03_appl );
+        mTitle = getString( R.string.menu03_appl );
+        actionBar.setTitle( mTitle );
 
         //IndicatorをDisableにしてからアイコンを変更する。
         mActionBarDrawerToggle.setDrawerIndicatorEnabled( false ); //indicator -> disable
@@ -155,14 +175,15 @@ public class MainActivity extends AppCompatActivity
     //ListView版アプリ一覧（アプリ毎の起動は出来ない。現在はGridView版が有効。呼び元をコメントで切り替え。）
     private void showMyAplList() {
 
-        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         MyAplListFragment myAplListFragment = MyAplListFragment.newInstance( "param1","param2" );
         fragmentTransaction.add(R.id.fragment_container, myAplListFragment);
         fragmentTransaction.addToBackStack( null );
         fragmentTransaction.commit();
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle( R.string.menu03_appl );
+        mTitle = getString( R.string.menu03_appl );
+        actionBar.setTitle( mTitle );
 
         //IndicatorをDisableにしてからアイコンを変更する。
         mActionBarDrawerToggle.setDrawerIndicatorEnabled( false ); //indicator -> disable
@@ -241,7 +262,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 //Log.d( TAG, "setToolbarNavigationClickListener.onClick()" );
-                List<Fragment> fragmentList = mFragmentManager.getFragments();
+                List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
                 Log.d( TAG, "fragmentList.size()->" + fragmentList.size() );
                 for ( int i=0; i<fragmentList.size(); i++ ) {
                     Fragment fragment = fragmentList.get(i);
@@ -250,8 +271,9 @@ public class MainActivity extends AppCompatActivity
                             fragment instanceof MyInfoListFragment ||
                             fragment instanceof MyDescImageFragment ) {
                         Log.d( TAG, "push Up key on fragment." );
-                        mFragmentManager.popBackStack();
+                        getSupportFragmentManager().popBackStack();
                         //ActionBarタイトル変更
+                        mTitle = getString( R.string.app_name );
                         ActionBar actionBar = getSupportActionBar();
                         actionBar.setTitle( mTitle );
 
@@ -262,9 +284,9 @@ public class MainActivity extends AppCompatActivity
                         mDrawerLayout.setDrawerLockMode( DrawerLayout.LOCK_MODE_UNLOCKED ); //navigationDrawerを反応するようにする。
                         mActionBarDrawerToggle.syncState(); //NavigationDrawerとActionBar同期
 
-                        Log.d( TAG, "fragmentList.size() [2] ->" + fragmentList.size() );
+                        resetDrawer();
 
-                        invalidateOptionsMenu(); //kick onPrepareOptionsMenu()
+//                        invalidateOptionsMenu(); //kick onPrepareOptionsMenu()
                         break;
                     }
                 }
@@ -277,17 +299,6 @@ public class MainActivity extends AppCompatActivity
         Uri uri = Uri.parse( "https://www.google.co.jp/" );
         Intent intent = new Intent( Intent.ACTION_VIEW, uri );
         startActivity( intent );
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        switch ( event.getKeyCode() ) {
-            case KeyEvent.KEYCODE_BACK :
-                Log.d( TAG, "onKeyDown()-> keycode_back" );
-                return super.onKeyDown(keyCode, event);
-            default:
-                return false;
-        }
     }
 
     @Override
@@ -432,13 +443,14 @@ public class MainActivity extends AppCompatActivity
         MyDescImageFragment myDescImageFragment = new MyDescImageFragment();
         myDescImageFragment.setArguments( bundle );
 
-        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.fragment_container, myDescImageFragment);
         fragmentTransaction.addToBackStack( null );
         fragmentTransaction.commit();
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle( R.string.desc_image );
+        mTitle = getString( R.string.desc_image );
+        actionBar.setTitle( mTitle );
 
         //IndicatorをDisableにしてからアイコンを変更する。
         mActionBarDrawerToggle.setDrawerIndicatorEnabled( false ); //indicator -> disable
@@ -455,20 +467,25 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onFragmentInteraction( int id) {
         Log.d( TAG, "onFragmentInteraction() start. id->"+id );
-        if ( id == MyAplListFragment.BACK_KEY ||
-                id == MyAplListGridFragment.BACK_KEY ||
-                id == MyInfoListFragment.BACK_KEY ||
-                id == MyDescImageFragment.BACK_KEY ) { //enum class で(?) event定義を統一したいなぁ・・・
+//        if ( id == MyAplListFragment.BACK_KEY ||
+//                id == MyAplListGridFragment.BACK_KEY ||
+//                id == MyInfoListFragment.BACK_KEY ||
+//                id == MyDescImageFragment.BACK_KEY ) { //enum class で(?) event定義を統一したいなぁ・・・
 
-            ActionBar actionBar = getSupportActionBar();
-            actionBar.setTitle( mTitle );
-            mDrawerLayout.setDrawerLockMode( DrawerLayout.LOCK_MODE_UNLOCKED ); //navigationDrawerを反応するようにする。
-            mActionBarDrawerToggle.syncState(); //NavigationDrawerとActionBar同期
-            //IndicatorはDisableのはずだからそのままアイコンを変更する。
-            mActionBarDrawerToggle.setHomeAsUpIndicator( R.mipmap.ic_menu_white_24dp ); //set icon (ハンバーガ－).
-            mActionBarDrawerToggle.setDrawerIndicatorEnabled( true ); //indicator -> enable
+            resetDrawer();
+//        }
+    }
 
-            invalidateOptionsMenu(); //kick onPrepareOptionsMenu()
-        }
+    public void resetDrawer() {
+        mTitle = getString( R.string.app_name );
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle( mTitle );
+        mDrawerLayout.setDrawerLockMode( DrawerLayout.LOCK_MODE_UNLOCKED ); //navigationDrawerを反応するようにする。
+        mActionBarDrawerToggle.syncState(); //NavigationDrawerとActionBar同期
+        //IndicatorはDisableのはずだからそのままアイコンを変更する。
+        mActionBarDrawerToggle.setHomeAsUpIndicator( R.mipmap.ic_menu_white_24dp ); //set icon (ハンバーガ－).
+        mActionBarDrawerToggle.setDrawerIndicatorEnabled( true ); //indicator -> enable
+
+        invalidateOptionsMenu(); //kick onPrepareOptionsMenu()
     }
 }

@@ -7,10 +7,17 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -66,6 +73,7 @@ public class MyAplListGridFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.d( TAG, "onCreate() arg=" + savedInstanceState );
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
@@ -76,6 +84,7 @@ public class MyAplListGridFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d( TAG, "onCreateView() arg=" + savedInstanceState );
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_my_apl_list_grid, container, false);
 
@@ -88,8 +97,16 @@ public class MyAplListGridFragment extends Fragment {
                 Log.d( TAG, "onKey() start.keyCode/keyEvent->"+keyCode+" / "+keyEvent );
                 if ( keyCode==KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP ) {
                     mListener.onFragmentInteraction( BACK_KEY );
+
+//                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+//                    fragmentManager.popBackStack();
+//
+//                    FragmentActivity fragmentActivity = getActivity();
+//                    ( (MainActivity)fragmentActivity ).resetDrawer();
+//
                 }
-                return false;
+                return false; //どうぞ続けて処理してください。
+//                return true; //これ以上の処理不要
             }
         });
 
@@ -111,7 +128,32 @@ public class MyAplListGridFragment extends Fragment {
         return mView;
     }
 
-    private void launchTappedApplication( AdapterView<?> parent, View view, int position, long id ) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d( TAG, "onOptionsItemSelected()" );
+        switch ( item.getItemId() ) {
+            case R.id.homeAsUp :
+                Log.d( TAG, "R.id.homeAsUp" );
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        Log.d( TAG, "onSaveInstanceState()" );
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        Log.d( TAG, "onViewStateRestored()" );
+        super.onViewStateRestored(savedInstanceState);
+    }
+
+    private void launchTappedApplication(AdapterView<?> parent, View view, int position, long id ) {
 
         MyAplListGridData item = (MyAplListGridData) parent.getItemAtPosition( position );
 
